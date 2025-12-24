@@ -14,27 +14,32 @@ We've migrated the wellness recommendation API from client-side to Vercel Edge F
 ## Changes Made
 
 ### 1. Created Edge Function (`api/wellness.ts`)
+
 - Handles wellness recommendation requests server-side
 - Keeps API key secure in environment variables
 - Uses the same SYSTEM_PROMPT and QUESTIONS as client-side
 
 ### 2. Updated Client Service (`services/geminiService.ts`)
+
 - Now calls `/api/wellness` endpoint instead of directly calling Gemini API
 - Removed API key dependency from client-side code
 - Maintains same interface for backward compatibility
 
 ### 3. Updated Vite Config (`vite.config.ts`)
+
 - Removed API key exposure in `define` configuration
 - API keys are now only used server-side
 
 ## Voice Assessment
 
 **Note**: Voice assessment (`VoiceAssessment.tsx`) still requires client-side API key access because:
+
 - Gemini Live API requires direct WebSocket connection from browser
 - Cannot be proxied through Edge Functions easily
 - This is a known limitation for real-time voice features
 
 **Future Solution**: Consider creating a token-based authentication system where:
+
 1. Client requests a temporary token from Edge Function
 2. Client uses token to authenticate with Gemini Live API
 3. Token expires after session ends
@@ -42,10 +47,13 @@ We've migrated the wellness recommendation API from client-side to Vercel Edge F
 ## Environment Variables
 
 ### Required in Vercel
+
 - `GEMINI_API_KEY` - Your Gemini API key (set in Vercel dashboard)
 
 ### Local Development
+
 Create `.env.local`:
+
 ```
 GEMINI_API_KEY=your_api_key_here
 ```
@@ -53,6 +61,7 @@ GEMINI_API_KEY=your_api_key_here
 ## Testing
 
 1. **Local Testing**:
+
    ```bash
    npm run dev
    # Edge Functions work automatically with Vercel CLI
@@ -68,6 +77,7 @@ GEMINI_API_KEY=your_api_key_here
 ### POST `/api/wellness`
 
 **Request**:
+
 ```json
 {
   "answers": {
@@ -83,6 +93,7 @@ GEMINI_API_KEY=your_api_key_here
 ```
 
 **Response**:
+
 ```json
 {
   "recommendation": "Welcome. I've reviewed your answers..."
@@ -90,6 +101,7 @@ GEMINI_API_KEY=your_api_key_here
 ```
 
 **Error Response**:
+
 ```json
 {
   "error": "Unable to generate recommendation",
@@ -120,16 +132,18 @@ GEMINI_API_KEY=your_api_key_here
 ## Troubleshooting
 
 ### 400 Error
+
 - Check that `GEMINI_API_KEY` is set in Vercel
 - Verify API key is valid and has proper permissions
 - Check Edge Function logs in Vercel dashboard
 
 ### CORS Issues
+
 - Edge Functions handle CORS automatically
 - No additional configuration needed
 
 ### API Key Not Found
+
 - Ensure `.env.local` exists for local development
 - Verify environment variable is set in Vercel dashboard
 - Check variable name is exactly `GEMINI_API_KEY`
-

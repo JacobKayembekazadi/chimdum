@@ -7,12 +7,14 @@ The Edge Function (`/api/wellness`) supports **both DeepSeek and Gemini APIs** w
 ## Supported Providers
 
 ### 1. DeepSeek API (Recommended)
+
 - **Cost-effective** and fast
 - **OpenAI-compatible** API
 - **Environment Variable:** `DEEPSEEK_API_KEY`
 - **Key Format:** Starts with `sk-` (e.g., `sk-001c05a90fad45f0858ea3015134ed68`)
 
 ### 2. Google Gemini API
+
 - **Advanced features** (supports voice in future)
 - **Native Google AI** integration
 - **Environment Variable:** `GEMINI_API_KEY`
@@ -23,6 +25,7 @@ The Edge Function (`/api/wellness`) supports **both DeepSeek and Gemini APIs** w
 The Edge Function automatically detects which provider to use based on available environment variables:
 
 **Priority Order:**
+
 1. `DEEPSEEK_API_KEY` (if set and starts with `sk-`) → Uses DeepSeek
 2. `GEMINI_API_KEY` (if set) → Uses Gemini
 3. `API_KEY` (fallback):
@@ -34,6 +37,7 @@ The Edge Function automatically detects which provider to use based on available
 ### Option 1: Set Environment Variable in Vercel
 
 **For DeepSeek:**
+
 ```bash
 # Production
 vercel env add DEEPSEEK_API_KEY production
@@ -47,6 +51,7 @@ vercel env add DEEPSEEK_API_KEY development
 ```
 
 **For Gemini:**
+
 ```bash
 # Production
 vercel env add GEMINI_API_KEY production
@@ -73,12 +78,14 @@ vercel env add GEMINI_API_KEY development
 ### Option 3: Remove One to Use the Other
 
 To switch providers:
+
 - **Use DeepSeek:** Set `DEEPSEEK_API_KEY`, remove/leave `GEMINI_API_KEY` unset
 - **Use Gemini:** Set `GEMINI_API_KEY`, remove/leave `DEEPSEEK_API_KEY` unset
 
 ## Current Production Configuration
 
 ✅ **DeepSeek API is currently configured** in production:
+
 - Environment Variable: `DEEPSEEK_API_KEY`
 - Provider: DeepSeek
 - Model: `deepseek-chat`
@@ -86,6 +93,7 @@ To switch providers:
 ## API Differences
 
 ### DeepSeek API
+
 ```typescript
 // Uses OpenAI-compatible format
 const client = new OpenAI({
@@ -105,6 +113,7 @@ const response = await client.chat.completions.create({
 ```
 
 ### Gemini API
+
 ```typescript
 // Uses Google GenAI format
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -122,12 +131,14 @@ const response = await ai.models.generateContent({
 ## Benefits of Each Provider
 
 ### DeepSeek Advantages
+
 - ✅ **Lower cost** - More affordable pricing
 - ✅ **Fast responses** - Optimized for speed
 - ✅ **OpenAI-compatible** - Easy to switch to OpenAI if needed
 - ✅ **Reliable** - Good uptime and stability
 
 ### Gemini Advantages
+
 - ✅ **Advanced features** - Better for complex tasks
 - ✅ **Voice support** - Can support voice features (if re-enabled)
 - ✅ **Google ecosystem** - Integrates with Google services
@@ -138,6 +149,7 @@ const response = await ai.models.generateContent({
 To check which provider is active:
 
 1. **Check Vercel Environment Variables:**
+
    ```bash
    vercel env ls
    ```
@@ -155,16 +167,19 @@ To check which provider is active:
 ## Troubleshooting
 
 ### "API key not configured" Error
+
 - Ensure at least one API key is set in Vercel
 - Check that the key is set for the correct environment (Production/Preview/Development)
 - Redeploy after adding environment variables
 
 ### Wrong Provider Being Used
+
 - Check environment variable priority (DeepSeek is checked first)
 - Remove the unwanted API key if you want to force a specific provider
 - Verify key format (DeepSeek keys start with `sk-`)
 
 ### Switching Doesn't Work
+
 - **Always redeploy** after changing environment variables
 - Clear browser cache if testing locally
 - Check Vercel deployment logs for errors
@@ -184,4 +199,3 @@ To check which provider is active:
 - [ ] Automatic failover between providers
 - [ ] Cost tracking per provider
 - [ ] Provider performance metrics
-
