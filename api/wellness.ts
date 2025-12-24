@@ -1,10 +1,39 @@
 import { GoogleGenAI } from '@google/genai';
+// eslint-disable-next-line import/no-named-as-default
+import OpenAI from 'openai';
 
 export const config = {
   runtime: 'edge',
 };
 
 // UserAnswers type is inferred from request body
+
+type ApiProvider = 'gemini' | 'deepseek';
+
+function detectProvider(): { provider: ApiProvider; apiKey: string } | null {
+  // Check for DeepSeek first (starts with 'sk-')
+  const deepseekKey = process.env.DEEPSEEK_API_KEY;
+  if (deepseekKey && deepseekKey.trim() !== '' && deepseekKey.startsWith('sk-')) {
+    return { provider: 'deepseek', apiKey: deepseekKey };
+  }
+
+  // Check for Gemini
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (geminiKey && geminiKey.trim() !== '') {
+    return { provider: 'gemini', apiKey: geminiKey };
+  }
+
+  // Fallback to generic API_KEY (treat as DeepSeek if starts with 'sk-', otherwise Gemini)
+  const genericKey = process.env.API_KEY;
+  if (genericKey && genericKey.trim() !== '') {
+    if (genericKey.startsWith('sk-')) {
+      return { provider: 'deepseek', apiKey: genericKey };
+    }
+    return { provider: 'gemini', apiKey: genericKey };
+  }
+
+  return null;
+}
 
 export default async function handler(req: Request) {
   if (req.method !== 'POST') {
@@ -24,16 +53,22 @@ export default async function handler(req: Request) {
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const providerInfo = detectProvider();
 
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    if (!providerInfo) {
+      return new Response(
+        JSON.stringify({
+          error: 'API key not configured',
+          message: 'Please set DEEPSEEK_API_KEY or GEMINI_API_KEY in environment variables',
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const { provider, apiKey } = providerInfo;
 
     // Questions matching the client-side constants
     const QUESTIONS = [
@@ -176,18 +211,46 @@ ${answerSummary}
 
 Ensure the recommendation strictly follows the Decision Logic and Output Format specified in your system instructions.`;
 
-    // Use the correct API format for @google/genai
-    // The API format matches the original client-side implementation
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
-      contents: prompt,
-      config: {
-        systemInstruction: SYSTEM_PROMPT,
-        temperature: 0.7,
-      },
-    });
+    let result: string;
 
-    const result = response.text;
+    if (provider === 'deepseek') {
+      // Use DeepSeek API (OpenAI-compatible)
+      const client = new OpenAI({
+        apiKey,
+        baseURL: 'https://api.deepseek.com',
+      });
+
+      const response = await client.chat.completions.create({
+        model: 'deepseek-chat',
+        messages: [
+          {
+            role: 'system',
+            content: SYSTEM_PROMPT,
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
+
+      result = response.choices[0]?.message?.content || '';
+    } else {
+      // Use Gemini API
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash-exp',
+        contents: prompt,
+        config: {
+          systemInstruction: SYSTEM_PROMPT,
+          temperature: 0.7,
+        },
+      });
+
+      result = response.text;
+    }
 
     if (!result || result.trim() === '') {
       return new Response(JSON.stringify({ error: 'Empty response from API' }), {

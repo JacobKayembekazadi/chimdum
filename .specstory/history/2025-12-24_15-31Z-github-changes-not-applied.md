@@ -3367,7 +3367,538 @@ npm run lint:fix
 
 ---
 
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: npm run lint</summary>
 
+```bash
+npm run lint
+```
+
+```
+
+&gt; chimdum-holistic-wellness-guide@0.0.0 lint
+&gt; eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Committing and pushing all changes:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git add .</summary>
+
+```bash
+git add .
+```
+
+```
+warning: in the working copy of 'docs/EDGE_FUNCTIONS_MIGRATION.md', CRLF will be replaced by LF the next time Git touches it
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git status</summary>
+
+```bash
+git status
+```
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+	modified:   .specstory/history/2025-12-24_15-31Z-github-changes-not-applied.md
+	modified:   App.tsx
+	new file:   api/wellness.ts
+	modified:   components/Hero.tsx
+	modified:   components/ResultsView.tsx
+	new file:   docs/EDGE_FUNCTIONS_MIGRATION.md
+	modified:   package-lock.json
+	modified:   package.json
+	modified:   services/geminiService.ts
+	modified:   vite.config.ts
+
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git commit -m "feat: Migrate to Edge Functions, add shop link, remove voice functionality
+
+- Create /api/wellness Edge Function for secure server-side API calls
+- Update geminiService to use Edge Function instead of client-side API
+- Remove API key exposure from Vite config
+- Add shop link (https://chimduumherbs.shop/) to ResultsView
+- Remove voice assessment functionality to simplify codebase
+- Update Hero component to remove voice option
+- Install ai package for potential future use
+- Add comprehensive Edge Functions migration documentation"</summary>
+
+```bash
+git commit -m "feat: Migrate to Edge Functions, add shop link, remove voice functionality
+
+- Create /api/wellness Edge Function for secure server-side API calls
+- Update geminiService to use Edge Function instead of client-side API
+- Remove API key exposure from Vite config
+- Add shop link (https://chimduumherbs.shop/) to ResultsView
+- Remove voice assessment functionality to simplify codebase
+- Update Hero component to remove voice option
+- Install ai package for potential future use
+- Add comprehensive Edge Functions migration documentation"
+```
+
+```
+[main ddd9d2b] feat: Migrate to Edge Functions, add shop link, remove voice functionality
+ 10 files changed, 1615 insertions(+), 187 deletions(-)
+ create mode 100644 api/wellness.ts
+ create mode 100644 docs/EDGE_FUNCTIONS_MIGRATION.md
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git push origin main</summary>
+
+```bash
+git push origin main
+```
+
+```
+To https://github.com/JacobKayembekazadi/chimdum.git
+   4cd0962..ddd9d2b  main -&gt; main
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+All changes have been committed and pushed. Summary:
+
+## Changes completed
+
+### 1. Shop link added
+- Updated `ResultsView.tsx` to link the "Shop Now" button to [https://chimduumherbs.shop/](https://chimduumherbs.shop/)
+- Opens in a new tab with proper security attributes
+- Replaces the "Get Started" button
+
+### 2. Voice functionality removed
+- Removed `VoiceAssessment` component import and usage from `App.tsx`
+- Removed `VOICE_ASSESSMENT` view enum
+- Removed voice-related state (`voiceResult`)
+- Updated `Hero.tsx` to remove the "Speak to Guide" button
+- Simplified the hero section to focus on the quiz
+
+### 3. Edge Functions migration
+- Created `/api/wellness.ts` Edge Function for secure server-side API calls
+- Updated `services/geminiService.ts` to call the Edge Function
+- Removed API key exposure from `vite.config.ts`
+- Added migration documentation
+
+## What happens next
+
+1. After completing the quiz, users see their personalized recommendation
+2. The "Shop Now" button links to [https://chimduumherbs.shop/](https://chimduumherbs.shop/)
+3. API keys are secure — no longer exposed in client-side code
+4. The 400 error should be resolved — Edge Functions handle API calls properly
+
+## Next steps for deployment
+
+1. Deploy to Vercel (if not already deployed)
+2. Set `GEMINI_API_KEY` in Vercel environment variables:
+   - Go to Vercel Dashboard → Your Project → Settings → Environment Variables
+   - Add: `GEMINI_API_KEY` = `your_api_key_here`
+3. Test the flow:
+   - Take the quiz
+   - Verify the recommendation appears
+   - Click "Shop Now" to confirm it links to the shop
+
+All changes are now on GitHub and ready for deployment.
+
+---
+
+_**User (2025-12-24 15:31Z)**_
+
+commit && deploy
+
+---
+
+_**Agent (model default, mode Agent)**_
+
+
+
+---
+
+
+Checking for uncommitted changes, then committing and deploying:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git status</summary>
+
+```bash
+git status
+```
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	modified:   .specstory/history/2025-12-24_15-31Z-github-changes-not-applied.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="read" data-tool-name="read_file">
+<details><summary>Tool use: **read_file** • Read file: vercel.json</summary>
+
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="search" data-tool-name="codebase_search">
+<details>
+                <summary>Tool use: **codebase_search** • Searched codebase "How is the project configured for Vercel deployment?" • **15** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `docs/VERCEL_DEPLOYMENT.md` | L71 |
+| `vercel.json` | L8 |
+| `README.md` | L131-224 |
+| `.github/workflows/deploy.yml` | L38 |
+| `vite.config.ts` | L43 |
+| `docs/INTEGRATION.md` | L96 |
+| `docs/VERCEL_DEPLOYMENT.md` | L68-87 |
+| `docs/EDGE_FUNCTIONS_MIGRATION.md` | L57 |
+| `docs/EDGE_FUNCTIONS_MIGRATION.md` | L49-135 |
+| `package.json` | L61 |
+| `README.md` | L66 |
+| `docs/VERCEL_AI_SDK.md` | L42 |
+| `FINAL_SUMMARY.md` | L160-249 |
+| `IMPLEMENTATION_PLAN.md` | L603-720 |
+| `DEPENDENCIES.md` | L100-237 |
+
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Committing the remaining change, then pushing to trigger deployment:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git add .</summary>
+
+```bash
+git add .
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git commit -m "chore: Update specstory history"</summary>
+
+```bash
+git commit -m "chore: Update specstory history"
+```
+
+```
+[main 6989927] chore: Update specstory history
+ 1 file changed, 1418 insertions(+), 55 deletions(-)
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git push origin main</summary>
+
+```bash
+git push origin main
+```
+
+```
+To https://github.com/JacobKayembekazadi/chimdum.git
+   ddd9d2b..6989927  main -&gt; main
+
+```
+</details>
+</tool-use>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: git log --oneline -5</summary>
+
+```bash
+git log --oneline -5
+```
+
+```
+6989927 chore: Update specstory history
+ddd9d2b feat: Migrate to Edge Functions, add shop link, remove voice functionality
+4cd0962 fix: Add .gitattributes to enforce LF line endings for cross-platform compatibility
+62d500e fix: Resolve Prettier formatting issues - remove trailing newlines
+acb62e0 feat: Apply changes from Cursor Cloud Agent - update workflows, dependencies, and configurations
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Code committed and pushed. Checking if Vercel CLI is installed and helping with deployment:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: vercel --version</summary>
+
+```bash
+vercel --version
+```
+
+```
+46.1.0
+Vercel CLI 46.1.0
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Vercel CLI is installed. Checking if the project is linked, then deploying:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: vercel link --yes</summary>
+
+```bash
+vercel link --yes
+```
+
+```
+Vercel CLI 46.1.0
+Loading scopes…
+Searching for existing projects…
+Local settings detected in vercel.json:
+- Build Command: npm run build
+- Ignore Command: git diff --quiet HEAD^ HEAD .
+- Development Command: npm run dev
+- Framework: vite
+- Install Command: npm install --legacy-peer-deps
+- Output Directory: dist
+Merging default Project Settings for Vite. Previously listed overrides are prioritized.
+Auto-detected Project Settings (Vite):
+Linked to jacobkayembekazadi-gmailcoms-projects/chimdum (created .vercel and added it to .gitignore)
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Project is linked. Deploying to production:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: vercel --prod</summary>
+
+```bash
+vercel --prod
+```
+
+```
+Vercel CLI 46.1.0
+Retrieving project…
+Deploying jacobkayembekazadi-gmailcoms-projects/chimdum
+Uploading [--------------------] (0.0B/1.5MB)
+Uploading [=====---------------] (401.9KB/1.5MB)
+Uploading [==========----------] (793.0KB/1.5MB)
+Uploading [===============-----] (1.1MB/1.5MB)
+Uploading [====================] (1.5MB/1.5MB)
+https://chimdum-ax64d2apt-jacobkayembekazadi-gmailcoms-projects.vercel.appInspect: https://vercel.com/jacobkayembekazadi-gmailcoms-projects/chimdum/7DER1VkYRVsE7uBZ55QdQkA1oHtR [4s]
+Production: https://chimdum-ax64d2apt-jacobkayembekazadi-gmailcoms-projects.vercel.app [4s]
+Queued
+Building
+Completing
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+Deployment is in progress. Checking environment variables and providing next steps:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: vercel env ls</summary>
+
+```bash
+vercel env ls
+```
+
+```
+Vercel CLI 46.1.0
+Retrieving project…
+&gt; No Environment Variables found for jacobkayembekazadi-gmailcoms-projects/chimdum [194ms]
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+The `GEMINI_API_KEY` environment variable is missing. Adding it:
+
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: echo "To add the GEMINI_API_KEY environment variable, run: vercel env add GEMINI_API_KEY production"</summary>
+
+```bash
+echo "To add the GEMINI_API_KEY environment variable, run: vercel env add GEMINI_API_KEY production"
+```
+
+```
+To add the GEMINI_API_KEY environment variable, run: vercel env add GEMINI_API_KEY production
+
+```
+</details>
+</tool-use>
+
+---
+
+
+
+---
+
+
+## Deployment complete
+
+### What was done
+1. Committed all changes to GitHub
+2. Pushed to `main` branch
+3. Deployed to Vercel production
+
+### Deployment URLs
+- Production: https://chimdum-ax64d2apt-jacobkayembekazadi-gmailcoms-projects.vercel.app
+- Inspect: https://vercel.com/jacobkayembekazadi-gmailcoms-projects/chimdum/7DER1VkYRVsE7uBZ55QdQkA1oHtR
+
+### Important: set environment variable
+
+The `GEMINI_API_KEY` environment variable is not set. Add it so the Edge Function works:
+
+Option 1: Using Vercel CLI (interactive)
+```bash
+vercel env add GEMINI_API_KEY production
+# When prompted, enter your API key
+# Then add it for preview and development too:
+vercel env add GEMINI_API_KEY preview
+vercel env add GEMINI_API_KEY development
+```
+
+Option 2: Using Vercel Dashboard
+1. Go to: https://vercel.com/jacobkayembekazadi-gmailcoms-projects/chimdum/settings/environment-variables
+2. Click "Add New"
+3. Name: `GEMINI_API_KEY`
+4. Value: Your Gemini API key
+5. Select all environments (Production, Preview, Development)
+6. Click "Save"
+7. Redeploy the latest deployment
+
+### After setting the environment variable
+- Redeploy (or push a new commit to auto-redeploy)
+- Test the quiz flow
+- Verify the "Shop Now" button links to https://chimduumherbs.shop/
+
+The app is deployed, but the wellness recommendation API will not work until `GEMINI_API_KEY` is set.
 
 ---
 
