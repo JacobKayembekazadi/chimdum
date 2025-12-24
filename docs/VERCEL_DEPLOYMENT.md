@@ -14,12 +14,14 @@ Since `.env.local` files are not committed to git (for security), you need to co
    - Click on your project
    - Go to **Settings** → **Environment Variables**
 
-3. **Add the Gemini API Key**
+3. **Add the DeepSeek API Key**
    - Click **Add New**
-   - **Name:** `GEMINI_API_KEY`
-   - **Value:** `AIzaSyAUWC2nvn8-2Pn_92wvN94krs5w-sCTzZY` (your actual API key)
+   - **Name:** `DEEPSEEK_API_KEY`
+   - **Value:** Your DeepSeek API key (starts with `sk-`)
    - **Environment:** Select all (Production, Preview, Development)
    - Click **Save**
+   
+   **Note:** You can also use `GEMINI_API_KEY` as a fallback, but `DEEPSEEK_API_KEY` is preferred.
 
 4. **Redeploy**
    - After adding the environment variable, go to **Deployments**
@@ -42,16 +44,20 @@ vercel login
 vercel link
 
 # Set environment variable
-vercel env add GEMINI_API_KEY
-# When prompted, enter your API key: AIzaSyAUWC2nvn8-2Pn_92wvN94krs5w-sCTzZY
+vercel env add DEEPSEEK_API_KEY
+# When prompted, enter your DeepSeek API key (starts with sk-)
 # Select all environments (Production, Preview, Development)
 ```
 
 ### Required Environment Variables
 
-- **GEMINI_API_KEY** (Required)
+- **DEEPSEEK_API_KEY** (Primary, Recommended)
+  - Your DeepSeek API key from https://platform.deepseek.com/
+  - Example: `sk-001c05a90fad45f0858ea3015134ed68`
+  
+- **GEMINI_API_KEY** (Optional Fallback)
   - Your Gemini API key from https://ai.google.dev/
-  - Example: `AIzaSyAUWC2nvn8-2Pn_92wvN94krs5w-sCTzZY`
+  - Only used if DEEPSEEK_API_KEY is not set
 
 ### Optional Environment Variables
 
@@ -75,7 +81,7 @@ After adding the environment variable and redeploying, you can verify it's worki
 
 **If you still see the configuration error:**
 
-1. Make sure the environment variable name is exactly `GEMINI_API_KEY` (case-sensitive)
+1. Make sure the environment variable name is exactly `DEEPSEEK_API_KEY` (case-sensitive, or `GEMINI_API_KEY` as fallback)
 2. Ensure it's enabled for all environments (Production, Preview, Development)
 3. Redeploy the application after adding the variable
 4. Check that the API key value doesn't have extra spaces or quotes
