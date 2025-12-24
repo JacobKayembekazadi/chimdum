@@ -39,4 +39,3 @@ describe('Hero', () => {
     expect(onStartVoice).toHaveBeenCalledTimes(1);
   });
 });
-
