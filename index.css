@@ -3,6 +3,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Tailwind Components */
+@layer components {
+  .gold-gradient {
+    @apply bg-gradient-to-br from-[#C5A059] via-[#F1D391] to-[#B38B45] bg-clip-text text-transparent;
+  }
+  
+  .gold-bg {
+    @apply bg-gradient-to-br from-[#C5A059] to-[#B38B45];
+  }
+  
+  .gold-border {
+    @apply border border-[#C5A059]/30;
+  }
+  
+  .glass-card {
+    @apply bg-[rgba(18,18,18,0.8)] backdrop-blur-xl border border-white/5;
+  }
+}
+
 /* Custom Animations */
 @keyframes spin-slow {
   from {
