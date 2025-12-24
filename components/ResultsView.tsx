@@ -16,7 +16,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, onRestart }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-
     const fetchRecommendation = async () => {
       setLoading(true);
       setError(null);

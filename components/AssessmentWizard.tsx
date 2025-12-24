@@ -95,7 +95,11 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
           Question {currentIndex + 1} of {QUESTIONS.length}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:gap-6" role="radiogroup" aria-labelledby="question-text">
+        <div
+          className="grid grid-cols-1 gap-4 sm:gap-6"
+          role="radiogroup"
+          aria-labelledby="question-text"
+        >
           {currentQuestion.options.map(option => (
             <button
               key={option.value}

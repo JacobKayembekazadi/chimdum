@@ -28,8 +28,8 @@ const Hero: React.FC<HeroProps> = ({ onStartText }) => {
         </h1>
 
         <p className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 md:mb-14 max-w-2xl mx-auto leading-relaxed font-light tracking-wide px-4">
-          Discover personalized herbal wellness recommendations based on Dr. Chimdum's African-rooted
-          wisdom.
+          Discover personalized herbal wellness recommendations based on Dr. Chimdum&apos;s
+          African-rooted wisdom.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">

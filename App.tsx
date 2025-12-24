@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 
 import Hero from './components/Hero';
 import Layout from './components/Layout';
@@ -61,10 +61,7 @@ const App: React.FC = () => {
           />
         )}
         {view === View.RESULTS && answers && (
-          <ResultsView
-            answers={answers}
-            onRestart={() => setView(View.ASSESSMENT)}
-          />
+          <ResultsView answers={answers} onRestart={() => setView(View.ASSESSMENT)} />
         )}
       </Suspense>
     </Layout>
