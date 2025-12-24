@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { generateWellnessRecommendation, DeepSeekServiceError } from '../services/deepseekService';
+import { generateWellnessRecommendation, DeepSeekServiceError } from '../services';
 import { UserAnswers } from '../types';
 
 import ErrorDisplay from './ErrorDisplay';
