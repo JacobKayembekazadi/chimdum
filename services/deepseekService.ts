@@ -4,7 +4,7 @@ import OpenAI from 'openai';
 import { SYSTEM_PROMPT, QUESTIONS } from '../constants';
 import { UserAnswers } from '../types';
 import { retryWithBackoff, formatApiError } from '../utils/apiHelpers';
-import { getValidatedApiKey } from '../utils/apiKeyValidator';
+import { getValidatedDeepSeekApiKey } from '../utils/apiKeyValidator';
 import { logError, getUserFriendlyErrorMessage } from '../utils/errorLogger';
 import { rateLimiter } from '../utils/rateLimiter';
 
@@ -41,7 +41,7 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
     );
   }
 
-  const apiKey = getValidatedApiKey();
+  const apiKey = getValidatedDeepSeekApiKey();
   const client = createDeepSeekClient(apiKey);
 
   // Construct a summary of user answers for the prompt
