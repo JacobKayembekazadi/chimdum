@@ -3,7 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 import { SYSTEM_PROMPT, QUESTIONS } from '../constants';
 import { UserAnswers } from '../types';
 import { retryWithBackoff, formatApiError } from '../utils/apiHelpers';
-import { getValidatedApiKey } from '../utils/apiKeyValidator';
+import { getValidatedGeminiApiKey } from '../utils/apiKeyValidator';
 import { logError, getUserFriendlyErrorMessage } from '../utils/errorLogger';
 import { rateLimiter } from '../utils/rateLimiter';
 
@@ -30,7 +30,7 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
     );
   }
 
-  const apiKey = getValidatedApiKey();
+  const apiKey = getValidatedGeminiApiKey();
 
   const ai = new GoogleGenAI({ apiKey });
 

@@ -2,7 +2,7 @@
  * API Key validation utilities
  */
 
-import { getApiKey } from './envValidation';
+import { getApiKey, getGeminiApiKey, getDeepSeekApiKey } from './envValidation';
 
 /**
  * Validates that an API key is present and properly formatted
@@ -30,7 +30,7 @@ export const isValidApiKeyFormat = (apiKey: string): boolean => {
 };
 
 /**
- * Gets API key with validation
+ * Gets API key with validation (generic fallback)
  * @throws Error if API key is not valid
  */
 export const getValidatedApiKey = (): string => {
@@ -44,6 +44,48 @@ export const getValidatedApiKey = (): string => {
 
   if (!isValidApiKeyFormat(apiKey)) {
     throw new Error('API key format appears invalid. Please check your configuration.');
+  }
+
+  return apiKey;
+};
+
+/**
+ * Gets Gemini API key with validation
+ * @throws Error if Gemini API key is not valid
+ */
+export const getValidatedGeminiApiKey = (): string => {
+  const apiKey = getGeminiApiKey();
+
+  if (!apiKey || apiKey.trim() === '' || apiKey === 'your_api_key_here') {
+    throw new Error(
+      'GEMINI_API_KEY is not configured. Please set it in your .env.local file.'
+    );
+  }
+
+  // Gemini specific validation could be added here
+  if (!isValidApiKeyFormat(apiKey)) {
+    throw new Error('GEMINI_API_KEY format appears invalid. It should typically start with "AIza".');
+  }
+
+  return apiKey;
+};
+
+/**
+ * Gets DeepSeek API key with validation
+ * @throws Error if DeepSeek API key is not valid
+ */
+export const getValidatedDeepSeekApiKey = (): string => {
+  const apiKey = getDeepSeekApiKey();
+
+  if (!apiKey || apiKey.trim() === '' || apiKey === 'your_api_key_here') {
+    throw new Error(
+      'DEEPSEEK_API_KEY is not configured. Please set it in your .env.local file.'
+    );
+  }
+
+  // DeepSeek specific validation could be added here
+  if (!isValidApiKeyFormat(apiKey)) {
+    throw new Error('DEEPSEEK_API_KEY format appears invalid. It should typically start with "sk-".');
   }
 
   return apiKey;

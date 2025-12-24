@@ -51,3 +51,19 @@ export const isEnvironmentValid = (): boolean => {
 export const getApiKey = (): string => {
   return process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.DEEPSEEK_API_KEY || '';
 };
+
+/**
+ * Gets the Gemini API key specifically
+ * @returns Gemini API key or empty string
+ */
+export const getGeminiApiKey = (): string => {
+  return process.env.GEMINI_API_KEY || '';
+};
+
+/**
+ * Gets the DeepSeek API key specifically
+ * @returns DeepSeek API key or empty string
+ */
+export const getDeepSeekApiKey = (): string => {
+  return process.env.DEEPSEEK_API_KEY || '';
+};
