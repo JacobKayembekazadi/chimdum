@@ -2,10 +2,9 @@ import React from 'react';
 
 interface HeroProps {
   onStartText: () => void;
-  onStartVoice: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
+const Hero: React.FC<HeroProps> = ({ onStartText }) => {
   return (
     <div className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-24 px-4 bg-[#050505]">
       {/* Background Ambience */}
@@ -29,29 +28,16 @@ const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
         </h1>
 
         <p className="text-lg md:text-xl text-zinc-400 mb-14 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-          Choose your path. Take our quick quiz or speak directly with our herbal guide.
+          Discover personalized herbal wellness recommendations based on Dr. Chimdum's African-rooted wisdom.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <button
             onClick={onStartText}
             className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-bold text-black transition-all bg-[#C5A059] rounded-none hover:bg-white active:scale-95 shadow-[0_0_30px_rgba(197,160,89,0.2)]"
-            aria-label="Start text-based wellness assessment"
+            aria-label="Start wellness assessment"
           >
             <span className="relative tracking-[0.2em] uppercase text-sm">Take the Quiz</span>
-          </button>
-
-          <button
-            onClick={onStartVoice}
-            className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-bold text-white transition-all bg-transparent border border-[#C5A059] rounded-none hover:bg-[#C5A059] hover:text-black active:scale-95"
-            aria-label="Start voice-based wellness assessment"
-          >
-            <span className="relative tracking-[0.2em] uppercase text-sm flex items-center gap-2">
-              Speak to Guide
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" />
-              </svg>
-            </span>
           </button>
         </div>
       </div>

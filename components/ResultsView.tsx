@@ -7,17 +7,15 @@ import ErrorDisplay from './ErrorDisplay';
 
 interface ResultsViewProps {
   answers: UserAnswers;
-  preGeneratedContent?: string;
   onRestart: () => void;
 }
 
-const ResultsView: React.FC<ResultsViewProps> = ({ answers, preGeneratedContent, onRestart }) => {
-  const [loading, setLoading] = useState(!preGeneratedContent);
-  const [content, setContent] = useState<string>(preGeneratedContent || '');
+const ResultsView: React.FC<ResultsViewProps> = ({ answers, onRestart }) => {
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (preGeneratedContent) return;
 
     const fetchRecommendation = async () => {
       setLoading(true);
@@ -40,7 +38,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, preGeneratedContent,
     };
 
     fetchRecommendation();
-  }, [answers, preGeneratedContent]);
+  }, [answers]);
 
   if (loading) {
     return (

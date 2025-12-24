@@ -13,7 +13,6 @@ const AssessmentWizard = lazy(() => import('./components/AssessmentWizard'));
 const ResultsView = lazy(() => import('./components/ResultsView'));
 const Philosophy = lazy(() => import('./components/Philosophy'));
 const Essentials = lazy(() => import('./components/Essentials'));
-const VoiceAssessment = lazy(() => import('./components/VoiceAssessment'));
 
 export enum View {
   HERO = 'HERO',
@@ -21,13 +20,11 @@ export enum View {
   RESULTS = 'RESULTS',
   PHILOSOPHY = 'PHILOSOPHY',
   ESSENTIALS = 'ESSENTIALS',
-  VOICE_ASSESSMENT = 'VOICE_ASSESSMENT',
 }
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>(View.HERO);
   const [answers, setAnswers] = useState<UserAnswers | null>(null);
-  const [voiceResult, setVoiceResult] = useState<string | null>(null);
   const [envError, setEnvError] = useState<string | null>(null);
 
   // Track page views
@@ -43,23 +40,11 @@ const App: React.FC = () => {
   }, []);
 
   const startAssessment = () => {
-    setVoiceResult(null);
     setView(View.ASSESSMENT);
-  };
-
-  const startVoiceAssessment = () => {
-    setVoiceResult(null);
-    setView(View.VOICE_ASSESSMENT);
   };
 
   const handleAssessmentComplete = (userAnswers: UserAnswers) => {
     setAnswers(userAnswers);
-    setVoiceResult(null);
-    setView(View.RESULTS);
-  };
-
-  const handleVoiceComplete = (recommendation: string) => {
-    setVoiceResult(recommendation);
     setView(View.RESULTS);
   };
 
@@ -76,9 +61,7 @@ const App: React.FC = () => {
   return (
     <Layout currentView={view} onViewChange={setView}>
       <OfflineIndicator />
-      {view === View.HERO && (
-        <Hero onStartText={startAssessment} onStartVoice={startVoiceAssessment} />
-      )}
+      {view === View.HERO && <Hero onStartText={startAssessment} />}
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-screen">
@@ -88,19 +71,15 @@ const App: React.FC = () => {
       >
         {view === View.PHILOSOPHY && <Philosophy onStartAssessment={startAssessment} />}
         {view === View.ESSENTIALS && <Essentials onStartAssessment={startAssessment} />}
-        {view === View.VOICE_ASSESSMENT && (
-          <VoiceAssessment onComplete={handleVoiceComplete} onCancel={handleAssessmentCancel} />
-        )}
         {view === View.ASSESSMENT && (
           <AssessmentWizard
             onComplete={handleAssessmentComplete}
             onCancel={handleAssessmentCancel}
           />
         )}
-        {view === View.RESULTS && (answers || voiceResult) && (
+        {view === View.RESULTS && answers && (
           <ResultsView
-            answers={answers || {}}
-            preGeneratedContent={voiceResult || undefined}
+            answers={answers}
             onRestart={() => setView(View.ASSESSMENT)}
           />
         )}
