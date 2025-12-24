@@ -2,11 +2,11 @@
  * Services barrel export
  */
 
-// Primary service - Gemini (supports voice)
-export { generateWellnessRecommendation, GeminiServiceError } from './geminiService';
+// Primary service - DeepSeek (OpenAI-compatible)
+export { generateWellnessRecommendation, DeepSeekServiceError } from './deepseekService';
+// Export DeepSeekServiceError as GeminiServiceError for backward compatibility
+export { DeepSeekServiceError as GeminiServiceError } from './deepseekService';
 export type { WellnessRecommendation } from './types';
 
-// Alternative service - DeepSeek (text only, OpenAI-compatible)
-// Note: DeepSeek service is deprecated but kept for reference
-// Uncomment if needed:
-// export { generateWellnessRecommendation as generateWellnessRecommendationDeepSeek, DeepSeekServiceError } from './deepseekService';
+// Alternative service - Gemini (kept for reference, not currently used)
+// export { generateWellnessRecommendation as generateWellnessRecommendationGemini, GeminiServiceError } from './geminiService';

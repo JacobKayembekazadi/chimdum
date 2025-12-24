@@ -185,7 +185,7 @@ The build output will be in the `dist` directory.
 
 1. Build the project: `npm run build`
 2. Drag and drop the `dist` folder to Netlify
-3. Add `GEMINI_API_KEY` environment variable
+3. Add `DEEPSEEK_API_KEY` environment variable (or `GEMINI_API_KEY` as fallback)
 
 ### Deploy to AWS S3
 

@@ -20,11 +20,14 @@ export class DeepSeekServiceError extends Error {
 
 /**
  * Creates a DeepSeek API client
+ * Note: dangerouslyAllowBrowser is required for browser environments
+ * The API key is already exposed via environment variables in the build
  */
 const createDeepSeekClient = (apiKey: string): OpenAI => {
   return new OpenAI({
     apiKey,
     baseURL: 'https://api.deepseek.com',
+    dangerouslyAllowBrowser: true, // Required for browser usage - API key is already in the build
   });
 };
 
@@ -60,21 +63,34 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
 
   try {
     const response = await retryWithBackoff(async () => {
-      return await client.chat.completions.create({
-        model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: SYSTEM_PROMPT,
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 2000,
-      });
+      try {
+        return await client.chat.completions.create({
+          model: 'deepseek-chat',
+          messages: [
+            {
+              role: 'system',
+              content: SYSTEM_PROMPT,
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 2000,
+        });
+      } catch (apiError: unknown) {
+        // Log the full error for debugging
+        const error = apiError as { status?: number; code?: string; message?: string; response?: unknown };
+        console.error('DeepSeek API call failed:', {
+          status: error?.status,
+          code: error?.code,
+          message: error?.message,
+          response: error?.response,
+          error: apiError,
+        });
+        throw apiError;
+      }
     });
 
     const result = response.choices[0]?.message?.content;
@@ -85,9 +101,22 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
 
     return result;
   } catch (error) {
+    // Log detailed error information for debugging
+    const errorDetails = error as { status?: number; code?: string; response?: { status?: number } };
+    console.error('DeepSeek API Error Details:', {
+      error,
+      errorType: error?.constructor?.name,
+      errorMessage: error instanceof Error ? error.message : String(error),
+      // Check if it's an OpenAI API error (DeepSeek uses OpenAI-compatible API)
+      status: errorDetails?.status,
+      code: errorDetails?.code,
+      response: errorDetails?.response,
+    });
+
     logError(error instanceof Error ? error : new Error(formatApiError(error)), {
       context: 'generateWellnessRecommendation',
       answers,
+      apiKeyPrefix: apiKey.substring(0, 10) + '...', // Log first 10 chars for debugging
     });
 
     // Re-throw as DeepSeekServiceError for better error handling
@@ -95,10 +124,38 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
       throw error;
     }
 
-    const friendlyMessage =
-      error instanceof Error
-        ? getUserFriendlyErrorMessage(error)
-        : 'Unable to generate recommendation. Please try again.';
+    // Extract more detailed error message
+    let friendlyMessage = 'Unable to generate recommendation. Please try again.';
+
+    if (error instanceof Error) {
+      // Check if it's an OpenAI API error (DeepSeek uses OpenAI-compatible API)
+      const errorMessage = error.message.toLowerCase();
+      const errorObj = error as { status?: number; response?: { status?: number } };
+      const status = errorObj?.status || errorObj?.response?.status;
+
+      if (
+        status === 400 ||
+        errorMessage.includes('400') ||
+        errorMessage.includes('bad request')
+      ) {
+        friendlyMessage =
+          'Invalid API request. The model name or request format may be incorrect. Please check the DeepSeek API documentation.';
+      } else if (
+        status === 401 ||
+        errorMessage.includes('401') ||
+        errorMessage.includes('unauthorized')
+      ) {
+        friendlyMessage = 'Invalid API key. Please check your DEEPSEEK_API_KEY configuration.';
+      } else if (
+        status === 429 ||
+        errorMessage.includes('429') ||
+        errorMessage.includes('rate limit')
+      ) {
+        friendlyMessage = 'Rate limit exceeded. Please wait a moment and try again.';
+      } else {
+        friendlyMessage = getUserFriendlyErrorMessage(error);
+      }
+    }
 
     throw new DeepSeekServiceError(friendlyMessage, error);
   }
