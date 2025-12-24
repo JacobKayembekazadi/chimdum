@@ -115,4 +115,3 @@ export const rateLimiter = new RateLimiter();
 export const createRateLimiter = (config: Partial<RateLimitConfig>): RateLimiter => {
   return new RateLimiter(config);
 };
-

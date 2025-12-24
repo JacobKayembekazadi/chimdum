@@ -11,13 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'src/test-utils.tsx',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/mockData',
-      ],
+      exclude: ['node_modules/', 'src/test-utils.tsx', '**/*.d.ts', '**/*.config.*', '**/mockData'],
     },
   },
   resolve: {
@@ -26,4 +20,3 @@ export default defineConfig({
     },
   },
 });
-

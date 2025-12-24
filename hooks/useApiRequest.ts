@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
-import { useCancellableRequest } from './useCancellableRequest';
+
 import { requestCache } from '../utils/requestCache';
+
+import { useCancellableRequest } from './useCancellableRequest';
 
 interface UseApiRequestOptions<T> {
   cacheKey?: string;
@@ -9,17 +11,14 @@ interface UseApiRequestOptions<T> {
   onError?: (error: Error) => void;
 }
 
-export const useApiRequest = <T,>() => {
+export const useApiRequest = <T>() => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [data, setData] = useState<T | null>(null);
   const { createAbortController, cancel } = useCancellableRequest();
 
   const execute = useCallback(
-    async (
-      apiCall: () => Promise<T>,
-      options: UseApiRequestOptions<T> = {}
-    ): Promise<T | null> => {
+    async (apiCall: () => Promise<T>, options: UseApiRequestOptions<T> = {}): Promise<T | null> => {
       const { cacheKey, cacheTTL, onSuccess, onError } = options;
 
       // Check cache first
@@ -72,4 +71,3 @@ export const useApiRequest = <T,>() => {
     cancel,
   };
 };
-

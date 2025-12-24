@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import Layout from './components/Layout';
-import Hero from './components/Hero';
+
 import ErrorDisplay from './components/ErrorDisplay';
+import Hero from './components/Hero';
+import Layout from './components/Layout';
 import OfflineIndicator from './components/OfflineIndicator';
+import { usePageTracking } from './hooks/useAnalytics';
 import { UserAnswers } from './types';
 import { isEnvironmentValid } from './utils/envValidation';
-import { usePageTracking } from './hooks/useAnalytics';
 
 // Lazy load components for code splitting
 const AssessmentWizard = lazy(() => import('./components/AssessmentWizard'));
@@ -21,7 +21,7 @@ export enum View {
   RESULTS = 'RESULTS',
   PHILOSOPHY = 'PHILOSOPHY',
   ESSENTIALS = 'ESSENTIALS',
-  VOICE_ASSESSMENT = 'VOICE_ASSESSMENT'
+  VOICE_ASSESSMENT = 'VOICE_ASSESSMENT',
 }
 
 const App: React.FC = () => {
@@ -37,7 +37,7 @@ const App: React.FC = () => {
     if (!isEnvironmentValid()) {
       setEnvError(
         'GEMINI_API_KEY is not configured. Please create a .env.local file with your API key.\n' +
-        'See .env.example for reference.'
+          'See .env.example for reference.'
       );
     }
   }, []);
@@ -46,12 +46,12 @@ const App: React.FC = () => {
     setVoiceResult(null);
     setView(View.ASSESSMENT);
   };
-  
+
   const startVoiceAssessment = () => {
     setVoiceResult(null);
     setView(View.VOICE_ASSESSMENT);
   };
-  
+
   const handleAssessmentComplete = (userAnswers: UserAnswers) => {
     setAnswers(userAnswers);
     setVoiceResult(null);
@@ -68,11 +68,7 @@ const App: React.FC = () => {
   if (envError) {
     return (
       <Layout currentView={view} onViewChange={setView}>
-        <ErrorDisplay
-          title="Configuration Error"
-          message={envError}
-          showRetry={false}
-        />
+        <ErrorDisplay title="Configuration Error" message={envError} showRetry={false} />
       </Layout>
     );
   }
@@ -81,28 +77,31 @@ const App: React.FC = () => {
     <Layout currentView={view} onViewChange={setView}>
       <OfflineIndicator />
       {view === View.HERO && (
-        <Hero 
-          onStartText={startAssessment} 
-          onStartVoice={startVoiceAssessment} 
-        />
+        <Hero onStartText={startAssessment} onStartVoice={startVoiceAssessment} />
       )}
-      <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin border-t-2 border-[#C5A059] rounded-full w-16 h-16"></div></div>}>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin border-t-2 border-[#C5A059] rounded-full w-16 h-16"></div>
+          </div>
+        }
+      >
         {view === View.PHILOSOPHY && <Philosophy onStartAssessment={startAssessment} />}
         {view === View.ESSENTIALS && <Essentials onStartAssessment={startAssessment} />}
         {view === View.VOICE_ASSESSMENT && (
           <VoiceAssessment onComplete={handleVoiceComplete} onCancel={handleAssessmentCancel} />
         )}
         {view === View.ASSESSMENT && (
-          <AssessmentWizard 
-            onComplete={handleAssessmentComplete} 
-            onCancel={handleAssessmentCancel} 
+          <AssessmentWizard
+            onComplete={handleAssessmentComplete}
+            onCancel={handleAssessmentCancel}
           />
         )}
         {view === View.RESULTS && (answers || voiceResult) && (
-          <ResultsView 
-            answers={answers || {}} 
+          <ResultsView
+            answers={answers || {}}
             preGeneratedContent={voiceResult || undefined}
-            onRestart={() => setView(View.ASSESSMENT)} 
+            onRestart={() => setView(View.ASSESSMENT)}
           />
         )}
       </Suspense>

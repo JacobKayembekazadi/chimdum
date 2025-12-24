@@ -35,7 +35,7 @@ export const isValidApiKeyFormat = (apiKey: string): boolean => {
  */
 export const getValidatedApiKey = (): string => {
   const apiKey = getApiKey();
-  
+
   if (!isValidApiKey()) {
     throw new Error(
       'API key is not configured. Please set GEMINI_API_KEY or DEEPSEEK_API_KEY in your .env.local file.'
@@ -48,4 +48,3 @@ export const getValidatedApiKey = (): string => {
 
   return apiKey;
 };
-

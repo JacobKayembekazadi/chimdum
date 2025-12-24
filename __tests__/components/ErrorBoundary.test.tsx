@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '../../src/test-utils';
+
 import ErrorBoundary from '../../components/ErrorBoundary';
+import { render, screen } from '../../src/test-utils';
 
 const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
   if (shouldThrow) {
@@ -22,16 +23,15 @@ describe('ErrorBoundary', () => {
   it('should render error UI when error occurs', () => {
     // Suppress console.error for this test
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText(/Application Error/i)).toBeInTheDocument();
-    
+
     consoleSpy.mockRestore();
   });
 });
-

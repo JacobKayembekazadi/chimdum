@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { validateEnvironment, isEnvironmentValid, getApiKey } from '../../utils/envValidation';
 
 describe('envValidation', () => {
@@ -17,19 +18,19 @@ describe('envValidation', () => {
     it('should throw error when API key is missing', () => {
       delete process.env.GEMINI_API_KEY;
       delete process.env.API_KEY;
-      
+
       expect(() => validateEnvironment()).toThrow('GEMINI_API_KEY is not set');
     });
 
     it('should throw error when API key is placeholder', () => {
       process.env.GEMINI_API_KEY = 'your_api_key_here';
-      
+
       expect(() => validateEnvironment()).toThrow('GEMINI_API_KEY is not set');
     });
 
     it('should return config when API key is valid', () => {
       process.env.GEMINI_API_KEY = 'valid_api_key_12345';
-      
+
       const config = validateEnvironment();
       expect(config.GEMINI_API_KEY).toBe('valid_api_key_12345');
       expect(config.API_TIMEOUT).toBe(30000);
@@ -40,13 +41,13 @@ describe('envValidation', () => {
     it('should return false when API key is missing', () => {
       delete process.env.GEMINI_API_KEY;
       delete process.env.API_KEY;
-      
+
       expect(isEnvironmentValid()).toBe(false);
     });
 
     it('should return true when API key is valid', () => {
       process.env.GEMINI_API_KEY = 'valid_api_key_12345';
-      
+
       expect(isEnvironmentValid()).toBe(true);
     });
   });
@@ -70,4 +71,3 @@ describe('envValidation', () => {
     });
   });
 });
-

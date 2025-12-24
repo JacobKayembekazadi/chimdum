@@ -17,28 +17,33 @@ chimdum/
 ## Key Design Decisions
 
 ### Error Handling
+
 - Error Boundary catches React errors
 - Retry logic with exponential backoff for API calls
 - User-friendly error messages
 - Comprehensive error logging
 
 ### State Management
+
 - React hooks for local state
 - No external state management library (can be added if needed)
 
 ### API Integration
+
 - Centralized service layer (`services/geminiService.ts`)
 - Rate limiting to prevent abuse
 - Request caching for performance
 - Request cancellation support
 
 ### Accessibility
+
 - ARIA labels and roles
 - Keyboard navigation support
 - Screen reader compatibility
 - Focus management
 
 ### Performance
+
 - Code splitting with React.lazy
 - Bundle optimization
 - Performance monitoring
@@ -75,4 +80,3 @@ chimdum/
 - Add more comprehensive error tracking
 - Enhance PWA features
 - Add internationalization support
-

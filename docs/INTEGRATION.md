@@ -3,17 +3,20 @@
 ## Setting Up the Project
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-org/chimdum.git
    cd chimdum
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Configure environment**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local and add your DEEPSEEK_API_KEY
@@ -28,9 +31,11 @@
 ## Environment Variables
 
 ### Required
+
 - `DEEPSEEK_API_KEY` - Your DeepSeek API key from [DeepSeek Platform](https://platform.deepseek.com/)
 
 ### Optional
+
 - `API_TIMEOUT` - API request timeout in milliseconds (default: 30000)
 - `API_RETRY_ATTEMPTS` - Number of retry attempts (default: 3)
 
@@ -86,6 +91,6 @@ The project can be deployed to any static hosting service:
 ## CI/CD
 
 The project includes GitHub Actions workflows:
+
 - `ci.yml` - Runs tests, linting, and builds on push/PR
 - `deploy.yml` - Deploys to production on main branch
-

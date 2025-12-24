@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { measureWebVitals, WebVitals } from '../utils/performance';
 
 export const useWebVitals = (onReport?: (metric: WebVitals) => void) => {
@@ -8,4 +9,3 @@ export const useWebVitals = (onReport?: (metric: WebVitals) => void) => {
     }
   }, [onReport]);
 };
-

@@ -23,7 +23,11 @@ export const updateTitle = (title: string): void => {
 /**
  * Updates or creates meta tag
  */
-export const updateMetaTag = (name: string, content: string, attribute: 'name' | 'property' = 'name'): void => {
+export const updateMetaTag = (
+  name: string,
+  content: string,
+  attribute: 'name' | 'property' = 'name'
+): void => {
   if (typeof document === 'undefined') return;
 
   const selector = attribute === 'name' ? `meta[name="${name}"]` : `meta[property="${name}"]`;
@@ -73,4 +77,3 @@ export const updateSEO = (data: SEOData): void => {
     updateMetaTag('og:type', data.type, 'property');
   }
 };
-

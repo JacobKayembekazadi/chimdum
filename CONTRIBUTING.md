@@ -29,6 +29,7 @@ Thank you for your interest in contributing! This document provides guidelines f
 ## Commit Messages
 
 Use conventional commits format:
+
 - `feat:` for new features
 - `fix:` for bug fixes
 - `docs:` for documentation
@@ -48,4 +49,3 @@ Use conventional commits format:
 ## Questions?
 
 Open an issue or contact the maintainers.
-

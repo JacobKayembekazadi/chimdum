@@ -35,10 +35,7 @@ export const logError = (error: Error, context?: Record<string, unknown>): void 
 /**
  * Logs a React error boundary error
  */
-export const logReactError = (
-  error: Error,
-  errorInfo: { componentStack?: string }
-): void => {
+export const logReactError = (error: Error, errorInfo: { componentStack?: string }): void => {
   logError(error, {
     componentStack: errorInfo.componentStack,
     type: 'react-error-boundary',
@@ -69,4 +66,3 @@ export const getUserFriendlyErrorMessage = (error: Error): string => {
 
   return 'Something went wrong. Please try again or contact support if the problem continues.';
 };
-

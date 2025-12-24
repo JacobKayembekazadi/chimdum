@@ -76,4 +76,3 @@ export const useKeyboardNavigation = (options: KeyboardNavigationOptions = {}) =
     }
   }, [enabled, handleKeyDown]);
 };
-

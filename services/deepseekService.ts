@@ -1,14 +1,18 @@
-
+// eslint-disable-next-line import/no-named-as-default
 import OpenAI from 'openai';
-import { UserAnswers } from '../types';
+
 import { SYSTEM_PROMPT, QUESTIONS } from '../constants';
-import { getValidatedApiKey } from '../utils/apiKeyValidator';
+import { UserAnswers } from '../types';
 import { retryWithBackoff, formatApiError } from '../utils/apiHelpers';
+import { getValidatedApiKey } from '../utils/apiKeyValidator';
 import { logError, getUserFriendlyErrorMessage } from '../utils/errorLogger';
 import { rateLimiter } from '../utils/rateLimiter';
 
 export class DeepSeekServiceError extends Error {
-  constructor(message: string, public readonly originalError?: unknown) {
+  constructor(
+    message: string,
+    public readonly originalError?: unknown
+  ) {
     super(message);
     this.name = 'DeepSeekServiceError';
   }
@@ -39,7 +43,7 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
 
   const apiKey = getValidatedApiKey();
   const client = createDeepSeekClient(apiKey);
-  
+
   // Construct a summary of user answers for the prompt
   const answerSummary = QUESTIONS.map(q => {
     const answerValue = answers[q.id];
@@ -74,7 +78,7 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
     });
 
     const result = response.choices[0]?.message?.content;
-    
+
     if (!result || result.trim() === '') {
       throw new DeepSeekServiceError('Empty response from API');
     }
@@ -91,11 +95,11 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
       throw error;
     }
 
-    const friendlyMessage = error instanceof Error 
-      ? getUserFriendlyErrorMessage(error)
-      : 'Unable to generate recommendation. Please try again.';
-    
+    const friendlyMessage =
+      error instanceof Error
+        ? getUserFriendlyErrorMessage(error)
+        : 'Unable to generate recommendation. Please try again.';
+
     throw new DeepSeekServiceError(friendlyMessage, error);
   }
 };
-

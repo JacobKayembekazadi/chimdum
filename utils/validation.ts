@@ -2,16 +2,18 @@
  * Input validation utilities
  */
 
-import { UserAnswers } from '../types';
 import { QUESTIONS } from '../constants';
+import { UserAnswers } from '../types';
 
 /**
  * Validates that all required questions have been answered
  */
-export const validateAnswers = (answers: UserAnswers): { isValid: boolean; missingQuestions: number[] } => {
+export const validateAnswers = (
+  answers: UserAnswers
+): { isValid: boolean; missingQuestions: number[] } => {
   const missingQuestions: number[] = [];
 
-  QUESTIONS.forEach((question) => {
+  QUESTIONS.forEach(question => {
     if (!answers[question.id] || answers[question.id].trim() === '') {
       missingQuestions.push(question.id);
     }
@@ -27,13 +29,13 @@ export const validateAnswers = (answers: UserAnswers): { isValid: boolean; missi
  * Validates that an answer value is valid for a given question
  */
 export const isValidAnswer = (questionId: number, answerValue: string): boolean => {
-  const question = QUESTIONS.find((q) => q.id === questionId);
-  
+  const question = QUESTIONS.find(q => q.id === questionId);
+
   if (!question) {
     return false;
   }
 
-  return question.options.some((option) => option.value === answerValue);
+  return question.options.some(option => option.value === answerValue);
 };
 
 /**
@@ -58,8 +60,5 @@ export const validateAnswersStructure = (answers: UserAnswers): boolean => {
   }
 
   // Check that all answers are strings
-  return Object.values(answers).every(
-    (value) => typeof value === 'string' && value.trim() !== ''
-  );
+  return Object.values(answers).every(value => typeof value === 'string' && value.trim() !== '');
 };
-

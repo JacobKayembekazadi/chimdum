@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
+
 import { QUESTIONS } from '../constants';
-import { UserAnswers } from '../types';
 import { useAnswerValidation } from '../hooks/useAnswerValidation';
+import { UserAnswers } from '../types';
 
 interface AssessmentWizardProps {
   onComplete: (answers: UserAnswers) => void;
@@ -49,18 +49,21 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
     <div className="max-w-3xl mx-auto py-20 px-4">
       {currentIndex === 0 && (
         <div className="mb-16 p-8 glass-card border-none rounded-none border-l-4 border-[#C5A059] text-center md:text-left">
-           <p className="text-zinc-300 text-lg leading-relaxed font-light italic">
-             “Hi there. I will ask a few simple questions to see how you are feeling. This will help me suggest plant-based support based on Dr. Chimdum's ideas.”
-           </p>
+          <p className="text-zinc-300 text-lg leading-relaxed font-light italic">
+            &quot;Hi there. I will ask a few simple questions to see how you are feeling. This will
+            help me suggest plant-based support based on Dr. Chimdum&apos;s ideas.&quot;
+          </p>
         </div>
       )}
 
       <div className="mb-12">
         <div className="flex justify-between items-end mb-6">
-          <button 
+          <button
             onClick={handleBack}
             className="text-zinc-500 hover:text-[#C5A059] transition-all text-[10px] font-bold uppercase tracking-[0.2em] focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-black rounded"
-            aria-label={currentIndex > 0 ? `Go back to question ${currentIndex}` : 'Cancel assessment'}
+            aria-label={
+              currentIndex > 0 ? `Go back to question ${currentIndex}` : 'Cancel assessment'
+            }
           >
             ← Back
           </button>
@@ -71,7 +74,7 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
           </div>
         </div>
         <div className="h-[2px] w-full bg-zinc-900 overflow-hidden">
-          <div 
+          <div
             className="h-full bg-[#C5A059] transition-all duration-700 ease-in-out"
             style={{ width: `${progress}%` }}
           />
@@ -81,8 +84,11 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
       <div className="glass-card rounded-none p-10 md:p-16 relative overflow-hidden">
         {/* Decorative corner */}
         <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-[#C5A059]/20" />
-        
-        <h2 id="question-text" className="text-3xl md:text-5xl font-bold text-white mb-14 leading-tight">
+
+        <h2
+          id="question-text"
+          className="text-3xl md:text-5xl font-bold text-white mb-14 leading-tight"
+        >
           {currentQuestion.text}
         </h2>
         <div className="sr-only" aria-live="polite" aria-atomic="true">
@@ -90,7 +96,7 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
         </div>
 
         <div className="grid grid-cols-1 gap-6" role="radiogroup" aria-labelledby="question-text">
-          {currentQuestion.options.map((option, index) => (
+          {currentQuestion.options.map(option => (
             <button
               key={option.value}
               onClick={() => handleSelect(option.value)}
@@ -103,12 +109,15 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
               <span className="text-xl text-zinc-400 group-hover:text-white transition-colors font-light">
                 {option.label}
               </span>
-              <div className="w-4 h-4 rounded-full border border-zinc-700 group-hover:border-[#C5A059] transition-colors" aria-hidden="true" />
+              <div
+                className="w-4 h-4 rounded-full border border-zinc-700 group-hover:border-[#C5A059] transition-colors"
+                aria-hidden="true"
+              />
             </button>
           ))}
         </div>
       </div>
-      
+
       <p className="mt-12 text-center text-zinc-600 text-[10px] uppercase tracking-[0.4em]">
         Chimdum Wellness Guide
       </p>

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { retryWithBackoff, formatApiError, createAbortController } from '../../utils/apiHelpers';
 
 describe('apiHelpers', () => {
@@ -27,10 +28,10 @@ describe('apiHelpers', () => {
 
     it('should throw after max attempts', async () => {
       const fn = vi.fn().mockRejectedValue(new Error('Network error'));
-      
-      await expect(
-        retryWithBackoff(fn, { maxAttempts: 2, initialDelay: 10 })
-      ).rejects.toThrow('Network error');
+
+      await expect(retryWithBackoff(fn, { maxAttempts: 2, initialDelay: 10 })).rejects.toThrow(
+        'Network error'
+      );
       expect(fn).toHaveBeenCalledTimes(2);
     });
   });
@@ -58,4 +59,3 @@ describe('apiHelpers', () => {
     });
   });
 });
-

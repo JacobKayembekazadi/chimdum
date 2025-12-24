@@ -1,70 +1,69 @@
-
 import { Question } from './types';
 
 export const QUESTIONS: Question[] = [
   {
     id: 1,
-    text: "How has your energy been lately?",
+    text: 'How has your energy been lately?',
     options: [
-      { label: "Very low", value: "low" },
-      { label: "Up and down", value: "fluctuating" },
-      { label: "Strong and steady", value: "steady" }
-    ]
+      { label: 'Very low', value: 'low' },
+      { label: 'Up and down', value: 'fluctuating' },
+      { label: 'Strong and steady', value: 'steady' },
+    ],
   },
   {
     id: 2,
-    text: "How often do you feel run-down or get sick?",
+    text: 'How often do you feel run-down or get sick?',
     options: [
-      { label: "Often", value: "often" },
-      { label: "Occasionally", value: "occasionally" },
-      { label: "Rarely", value: "rarely" }
-    ]
+      { label: 'Often', value: 'often' },
+      { label: 'Occasionally', value: 'occasionally' },
+      { label: 'Rarely', value: 'rarely' },
+    ],
   },
   {
     id: 3,
-    text: "How is your digestion?",
+    text: 'How is your digestion?',
     options: [
-      { label: "Bloating or discomfort", value: "poor" },
-      { label: "Inconsistent", value: "inconsistent" },
-      { label: "Smooth and regular", value: "good" }
-    ]
+      { label: 'Bloating or discomfort', value: 'poor' },
+      { label: 'Inconsistent', value: 'inconsistent' },
+      { label: 'Smooth and regular', value: 'good' },
+    ],
   },
   {
     id: 4,
-    text: "How is your sleep?",
+    text: 'How is your sleep?',
     options: [
-      { label: "Poor or restless", value: "poor" },
-      { label: "Average", value: "average" },
-      { label: "Deep and restful", value: "restful" }
-    ]
+      { label: 'Poor or restless', value: 'poor' },
+      { label: 'Average', value: 'average' },
+      { label: 'Deep and restful', value: 'restful' },
+    ],
   },
   {
     id: 5,
-    text: "How would you describe your stress levels?",
+    text: 'How would you describe your stress levels?',
     options: [
-      { label: "High", value: "high" },
-      { label: "Moderate", value: "moderate" },
-      { label: "Low", value: "low" }
-    ]
+      { label: 'High', value: 'high' },
+      { label: 'Moderate', value: 'moderate' },
+      { label: 'Low', value: 'low' },
+    ],
   },
   {
     id: 6,
-    text: "What is your MAIN goal right now?",
+    text: 'What is your MAIN goal right now?',
     options: [
-      { label: "More energy & drive", value: "energy" },
-      { label: "Stronger immunity", value: "immunity" },
-      { label: "Better digestion & cleansing", value: "digestion" },
-      { label: "Overall balance", value: "balance" }
-    ]
+      { label: 'More energy & drive', value: 'energy' },
+      { label: 'Stronger immunity', value: 'immunity' },
+      { label: 'Better digestion & cleansing', value: 'digestion' },
+      { label: 'Overall balance', value: 'balance' },
+    ],
   },
   {
     id: 7,
-    text: "Are you currently taking any herbal products?",
+    text: 'Are you currently taking any herbal products?',
     options: [
-      { label: "Yes", value: "yes" },
-      { label: "No", value: "no" }
-    ]
-  }
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
 ];
 
 export const SYSTEM_PROMPT = `

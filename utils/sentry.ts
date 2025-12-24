@@ -12,7 +12,7 @@ export const initSentry = (): void => {
   //   environment: process.env.NODE_ENV,
   //   tracesSampleRate: 1.0,
   // });
-  
+
   if (import.meta.env.DEV) {
     console.log('Sentry would be initialized in production');
   }
@@ -23,8 +23,10 @@ export const captureException = (error: Error, context?: Record<string, unknown>
   console.error('Error captured:', error, context);
 };
 
-export const captureMessage = (message: string, level: 'info' | 'warning' | 'error' = 'info'): void => {
+export const captureMessage = (
+  message: string,
+  level: 'info' | 'warning' | 'error' = 'info'
+): void => {
   // Sentry.captureMessage(message, level);
   console.log(`[${level.toUpperCase()}]`, message);
 };
-

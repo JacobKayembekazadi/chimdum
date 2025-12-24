@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
+
+import { UserAnswers } from '../../types';
 import {
   validateAnswers,
   isValidAnswer,
   sanitizeInput,
   validateAnswersStructure,
 } from '../../utils/validation';
-import { UserAnswers } from '../../types';
 
 describe('validation utilities', () => {
   describe('validateAnswers', () => {
@@ -77,4 +78,3 @@ describe('validation utilities', () => {
     });
   });
 });
-

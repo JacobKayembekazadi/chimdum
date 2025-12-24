@@ -21,20 +21,22 @@ The Vercel AI SDK provides a unified API for working with multiple AI providers.
 You could use Vercel AI SDK for text-based recommendations while keeping Gemini for voice:
 
 ### Option 1: Hybrid Approach
+
 - Use Vercel AI SDK with OpenAI/Anthropic for text recommendations
 - Keep `@google/genai` for voice assessment
 
 ### Option 2: Wait for Official Support
+
 - Monitor Vercel AI SDK updates for Gemini support
 - Migrate when official support is available
 
 ## Recommendation
 
 **Keep your current implementation** because:
+
 - ✅ It's working perfectly
 - ✅ Supports all Gemini features (including voice)
 - ✅ No need for additional abstraction
 - ✅ Better performance
 
 The Vercel AI SDK warning about Tailwind CSS CDN is unrelated to AI SDK - that's a separate issue we've already fixed.
-

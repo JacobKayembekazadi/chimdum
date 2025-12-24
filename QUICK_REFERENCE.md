@@ -42,6 +42,7 @@ npm run format:check
 ## 📁 Key File Locations
 
 ### Configuration Files
+
 - `package.json` - Dependencies and scripts
 - `tsconfig.json` - TypeScript configuration
 - `vite.config.ts` - Vite build configuration
@@ -50,12 +51,14 @@ npm run format:check
 - `.env.example` - Environment variables template
 
 ### Core Application Files
+
 - `App.tsx` - Main application component
 - `index.tsx` - Application entry point
 - `index.html` - HTML template
 - `index.css` - Global styles
 
 ### Components
+
 - `components/AssessmentWizard.tsx` - Text-based assessment
 - `components/VoiceAssessment.tsx` - Voice-based assessment
 - `components/ResultsView.tsx` - Results display
@@ -63,9 +66,11 @@ npm run format:check
 - `components/Layout.tsx` - App layout
 
 ### Services
+
 - `services/geminiService.ts` - Gemini API integration
 
 ### Utilities
+
 - `utils/envValidation.ts` - Environment validation
 - `utils/apiHelpers.ts` - API utilities
 - `utils/validation.ts` - Input validation
@@ -81,6 +86,7 @@ GEMINI_API_KEY=your_api_key_here
 ## 🧪 Testing
 
 ### Running Tests
+
 ```bash
 # Run all tests
 npm test
@@ -96,6 +102,7 @@ npm test -- AssessmentWizard.test.tsx
 ```
 
 ### Test Structure
+
 ```
 __tests__/
 ├── components/     # Component tests
@@ -106,6 +113,7 @@ __tests__/
 ## 🎨 Code Quality
 
 ### Linting
+
 ```bash
 # Check for linting errors
 npm run lint
@@ -115,6 +123,7 @@ npm run lint:fix
 ```
 
 ### Formatting
+
 ```bash
 # Format all files
 npm run format
@@ -145,12 +154,14 @@ npm run format:check
 ## 📦 Dependencies
 
 ### Production
+
 - `react` - UI library
 - `react-dom` - React DOM renderer
 - `@google/genai` - Gemini API client
 - `@sentry/react` - Error tracking
 
 ### Development
+
 - `vite` - Build tool
 - `typescript` - Type checking
 - `vitest` - Testing framework
@@ -161,6 +172,7 @@ npm run format:check
 ## 🔧 Development Workflow
 
 1. **Create Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -171,6 +183,7 @@ npm run format:check
    - Update documentation
 
 3. **Quality Checks**
+
    ```bash
    npm run lint
    npm run format
@@ -178,6 +191,7 @@ npm run format:check
    ```
 
 4. **Commit Changes**
+
    ```bash
    git add .
    git commit -m "feat: your feature description"
@@ -214,18 +228,21 @@ When implementing features, follow this priority:
 ## 📝 Code Style Guidelines
 
 ### TypeScript
+
 - Use strict mode
 - Prefer interfaces over types for object shapes
 - Use explicit return types for functions
 - Avoid `any` type
 
 ### React
+
 - Use functional components
 - Use hooks for state management
 - Keep components small and focused
 - Extract reusable logic to custom hooks
 
 ### Naming Conventions
+
 - Components: PascalCase (`AssessmentWizard.tsx`)
 - Utilities: camelCase (`apiHelpers.ts`)
 - Constants: UPPER_SNAKE_CASE (`SYSTEM_PROMPT`)
@@ -283,4 +300,3 @@ Before committing code:
 ---
 
 **Last Updated:** [Date]
-

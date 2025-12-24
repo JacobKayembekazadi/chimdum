@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { trackPageView, trackEvent } from '../utils/analytics';
 
 export const usePageTracking = (path: string): void => {
@@ -13,4 +14,3 @@ export const useAnalytics = () => {
     trackPageView,
   };
 };
-

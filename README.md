@@ -29,17 +29,20 @@ A digital assistant built on Dr. Chimdum's African herbal philosophy, guiding us
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-org/chimdum.git
    cd chimdum
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local and add your GEMINI_API_KEY
@@ -47,6 +50,7 @@ A digital assistant built on Dr. Chimdum's African herbal philosophy, guiding us
    ```
 
 4. **Run development server**
+
    ```bash
    npm run dev
    ```
@@ -233,6 +237,7 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ## 📞 Support
 
 For issues and questions:
+
 - Open an issue on GitHub
 - Check the [documentation](./docs/)
 - Review [troubleshooting guide](./docs/INTEGRATION.md#troubleshooting)

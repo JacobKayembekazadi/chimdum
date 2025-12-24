@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface HeroProps {
@@ -23,16 +22,16 @@ const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
           </span>
           <div className="h-[1px] w-8 bg-[#C5A059]" />
         </div>
-        
+
         <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
           Learn What Your <br />
           <span className="italic gold-gradient">Body Needs.</span>
         </h1>
-        
+
         <p className="text-lg md:text-xl text-zinc-400 mb-14 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
           Choose your path. Take our quick quiz or speak directly with our herbal guide.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <button
             onClick={onStartText}
@@ -41,7 +40,7 @@ const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
           >
             <span className="relative tracking-[0.2em] uppercase text-sm">Take the Quiz</span>
           </button>
-          
+
           <button
             onClick={onStartVoice}
             className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-bold text-white transition-all bg-transparent border border-[#C5A059] rounded-none hover:bg-[#C5A059] hover:text-black active:scale-95"
@@ -49,7 +48,9 @@ const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
           >
             <span className="relative tracking-[0.2em] uppercase text-sm flex items-center gap-2">
               Speak to Guide
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"/></svg>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" />
+              </svg>
             </span>
           </button>
         </div>
@@ -58,14 +59,18 @@ const Hero: React.FC<HeroProps> = ({ onStartText, onStartVoice }) => {
       <div className="absolute bottom-12 left-0 w-full px-4 md:px-12">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between gap-12 border-t border-white/5 pt-12">
           {[
-            { label: "01", title: "Old Wisdom", desc: "Real recipes used for many years." },
-            { label: "02", title: "Natural Power", desc: "Help yourself feel strong and ready." },
-            { label: "03", title: "Whole Body Help", desc: "Balance for your whole self." }
+            { label: '01', title: 'Old Wisdom', desc: 'Real recipes used for many years.' },
+            { label: '02', title: 'Natural Power', desc: 'Help yourself feel strong and ready.' },
+            { label: '03', title: 'Whole Body Help', desc: 'Balance for your whole self.' },
           ].map((item, i) => (
             <div key={i} className="flex gap-4 items-start max-w-[240px]">
-              <span className="text-[#C5A059] text-xs font-bold tracking-tighter">{item.label}</span>
+              <span className="text-[#C5A059] text-xs font-bold tracking-tighter">
+                {item.label}
+              </span>
               <div>
-                <h3 className="text-white text-xs font-bold uppercase tracking-widest mb-1">{item.title}</h3>
+                <h3 className="text-white text-xs font-bold uppercase tracking-widest mb-1">
+                  {item.title}
+                </h3>
                 <p className="text-zinc-500 text-[11px] leading-relaxed">{item.desc}</p>
               </div>
             </div>

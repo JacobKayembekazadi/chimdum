@@ -7,12 +7,15 @@
 Generates a personalized wellness recommendation based on user answers using DeepSeek API.
 
 **Parameters:**
+
 - `answers: UserAnswers` - Object containing user's answers to assessment questions
 
 **Returns:**
+
 - `Promise<string>` - Formatted wellness recommendation text
 
 **Example:**
+
 ```typescript
 import { generateWellnessRecommendation } from './services/deepseekService';
 
@@ -30,11 +33,13 @@ const recommendation = await generateWellnessRecommendation(answers);
 ```
 
 **Error Handling:**
+
 - Throws `DeepSeekServiceError` if API call fails
 - Includes retry logic with exponential backoff
 - Rate limiting applied automatically
 
 **API Details:**
+
 - Uses DeepSeek Chat API (OpenAI-compatible)
 - Model: `deepseek-chat`
 - Base URL: `https://api.deepseek.com`
@@ -61,12 +66,15 @@ const isValid = isEnvironmentValid();
 ```typescript
 import { retryWithBackoff } from './utils/apiHelpers';
 
-const result = await retryWithBackoff(async () => {
-  return await apiCall();
-}, {
-  maxAttempts: 3,
-  initialDelay: 1000,
-});
+const result = await retryWithBackoff(
+  async () => {
+    return await apiCall();
+  },
+  {
+    maxAttempts: 3,
+    initialDelay: 1000,
+  }
+);
 ```
 
 ### Rate Limiting
@@ -81,4 +89,3 @@ if (rateLimiter.isAllowed('user-id')) {
   // Show rate limit message
 }
 ```
-

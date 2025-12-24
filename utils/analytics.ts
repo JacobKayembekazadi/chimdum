@@ -7,7 +7,7 @@ export const trackEvent = (eventName: string, properties?: Record<string, unknow
   // Analytics tracking would go here
   // Example for Google Analytics:
   // gtag('event', eventName, properties);
-  
+
   if (import.meta.env.DEV) {
     console.log('Analytics event:', eventName, properties);
   }
@@ -16,7 +16,7 @@ export const trackEvent = (eventName: string, properties?: Record<string, unknow
 export const trackPageView = (path: string): void => {
   // Analytics page view tracking
   // Example: gtag('config', 'GA_MEASUREMENT_ID', { page_path: path });
-  
+
   if (import.meta.env.DEV) {
     console.log('Page view:', path);
   }
@@ -28,4 +28,3 @@ export const trackConversion = (conversionName: string, value?: number): void =>
     value,
   });
 };
-

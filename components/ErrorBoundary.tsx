@@ -1,5 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+
 import { logReactError, getUserFriendlyErrorMessage } from '../utils/errorLogger';
+
 import ErrorDisplay from './ErrorDisplay';
 
 interface Props {
@@ -65,4 +67,3 @@ class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
-

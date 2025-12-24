@@ -5,6 +5,7 @@ Complete list of dependencies needed for the Chimdum Wellness Guide implementati
 ## 📦 Current Dependencies
 
 ### Production Dependencies
+
 ```json
 {
   "dependencies": {
@@ -16,6 +17,7 @@ Complete list of dependencies needed for the Chimdum Wellness Guide implementati
 ```
 
 ### Development Dependencies
+
 ```json
 {
   "devDependencies": {
@@ -32,16 +34,19 @@ Complete list of dependencies needed for the Chimdum Wellness Guide implementati
 ## 🆕 New Dependencies to Add
 
 ### Phase 1: Critical Fixes
+
 **No new dependencies required** - Uses existing packages
 
 ---
 
 ### Phase 2: Security & Validation
+
 **No new dependencies required** - Uses existing packages
 
 ---
 
 ### Phase 3: Testing Infrastructure
+
 ```bash
 npm install --save-dev \
   vitest@^1.0.0 \
@@ -52,6 +57,7 @@ npm install --save-dev \
 ```
 
 **Package.json addition:**
+
 ```json
 {
   "devDependencies": {
@@ -65,6 +71,7 @@ npm install --save-dev \
 ```
 
 **Optional E2E Testing:**
+
 ```bash
 # Option 1: Playwright
 npm install --save-dev @playwright/test@^1.40.0
@@ -76,6 +83,7 @@ npm install --save-dev cypress@^13.6.0
 ---
 
 ### Phase 4: Code Quality & Formatting
+
 ```bash
 npm install --save-dev \
   eslint@^8.50.0 \
@@ -91,6 +99,7 @@ npm install --save-dev \
 ```
 
 **Package.json addition:**
+
 ```json
 {
   "devDependencies": {
@@ -111,16 +120,19 @@ npm install --save-dev \
 ---
 
 ### Phase 5: Accessibility
+
 **No new dependencies required** - Uses existing packages
 
 ---
 
 ### Phase 6: Performance & Optimization
+
 ```bash
 npm install --save-dev rollup-plugin-visualizer@^5.12.0
 ```
 
 **Package.json addition:**
+
 ```json
 {
   "devDependencies": {
@@ -132,11 +144,13 @@ npm install --save-dev rollup-plugin-visualizer@^5.12.0
 ---
 
 ### Phase 7: PWA & Offline Support
+
 ```bash
 npm install --save-dev vite-plugin-pwa@^0.17.0
 ```
 
 **Package.json addition:**
+
 ```json
 {
   "devDependencies": {
@@ -148,11 +162,13 @@ npm install --save-dev vite-plugin-pwa@^0.17.0
 ---
 
 ### Phase 8: Monitoring & Analytics
+
 ```bash
 npm install @sentry/react@^7.80.0
 ```
 
 **Package.json addition:**
+
 ```json
 {
   "dependencies": {
@@ -162,6 +178,7 @@ npm install @sentry/react@^7.80.0
 ```
 
 **Optional Analytics:**
+
 ```bash
 # Option 1: Google Analytics
 npm install react-ga4@^2.1.0
@@ -173,9 +190,11 @@ npm install react-ga4@^2.1.0
 ---
 
 ### Phase 9: SEO & Meta
+
 **No new dependencies required** - Uses existing packages
 
 **Optional:**
+
 ```bash
 npm install react-helmet-async@^2.0.0
 ```
@@ -183,14 +202,17 @@ npm install react-helmet-async@^2.0.0
 ---
 
 ### Phase 10: CI/CD & Deployment
+
 **No new dependencies required** - Uses GitHub Actions (no npm packages)
 
 ---
 
 ### Phase 11: Documentation
+
 **No new dependencies required** - Uses Markdown
 
 **Optional documentation tools:**
+
 ```bash
 npm install --save-dev \
   typedoc@^0.25.0 \
@@ -200,6 +222,7 @@ npm install --save-dev \
 ---
 
 ### Phase 12: Additional Features
+
 **No new dependencies required** - Uses existing packages
 
 ---
@@ -207,6 +230,7 @@ npm install --save-dev \
 ## 📋 Complete Dependency List
 
 ### Final Production Dependencies
+
 ```json
 {
   "dependencies": {
@@ -219,6 +243,7 @@ npm install --save-dev \
 ```
 
 ### Final Development Dependencies
+
 ```json
 {
   "devDependencies": {
@@ -253,6 +278,7 @@ npm install --save-dev \
 ## 🚀 Installation Commands
 
 ### Install All Dependencies at Once
+
 ```bash
 # Production dependencies
 npm install @google/genai@^1.34.0 @sentry/react@^7.80.0
@@ -280,6 +306,7 @@ npm install --save-dev \
 ```
 
 ### Install by Phase
+
 ```bash
 # Phase 3: Testing
 npm install --save-dev vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
@@ -305,16 +332,19 @@ npm install --save-dev @playwright/test
 ## 🔄 Update Existing Dependencies
 
 ### Check for Updates
+
 ```bash
 npm outdated
 ```
 
 ### Update All Dependencies
+
 ```bash
 npm update
 ```
 
 ### Update Specific Package
+
 ```bash
 npm install package-name@latest
 ```
@@ -324,12 +354,14 @@ npm install package-name@latest
 ## 📊 Bundle Size Impact
 
 ### Estimated Size Increases
+
 - **@sentry/react:** ~50KB (gzipped)
 - **Testing libraries:** Development only (no production impact)
 - **ESLint/Prettier:** Development only (no production impact)
 - **vite-plugin-pwa:** ~10KB (service worker)
 
 ### Total Production Bundle Impact
+
 - **Before:** ~200KB (estimated)
 - **After:** ~260KB (estimated)
 - **Increase:** ~60KB (30% increase)
@@ -339,14 +371,17 @@ npm install package-name@latest
 ## ⚠️ Compatibility Notes
 
 ### Node.js Version
+
 - **Required:** Node.js 18+ (for Vite 6)
 - **Recommended:** Node.js 20 LTS
 
 ### Browser Support
+
 - **Modern browsers:** Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 - **Voice Assessment:** Requires modern browser with Web Audio API support
 
 ### TypeScript Version
+
 - **Current:** TypeScript 5.8.2
 - **Compatible:** TypeScript 5.0+
 
@@ -355,16 +390,19 @@ npm install package-name@latest
 ## 🔍 Dependency Audit
 
 ### Security Audit
+
 ```bash
 npm audit
 ```
 
 ### Fix Security Issues
+
 ```bash
 npm audit fix
 ```
 
 ### Check for Vulnerabilities
+
 ```bash
 npm audit --audit-level=moderate
 ```
@@ -383,4 +421,3 @@ npm audit --audit-level=moderate
 
 **Last Updated:** [Date]
 **Next Review:** After Phase 1 completion
-

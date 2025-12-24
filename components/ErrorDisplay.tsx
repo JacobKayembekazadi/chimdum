@@ -19,7 +19,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     <div className="max-w-2xl mx-auto py-20 px-4">
       <div className="glass-card rounded-none p-12 text-center border-none border-t-2 border-red-500/50 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-red-500/20" />
-        
+
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-red-500/10 flex items-center justify-center">
             <svg
@@ -37,11 +37,9 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               />
             </svg>
           </div>
-          
+
           <h2 className="text-3xl font-bold text-white mb-4">{title}</h2>
-          <p className="text-zinc-400 text-lg leading-relaxed max-w-md mx-auto">
-            {message}
-          </p>
+          <p className="text-zinc-400 text-lg leading-relaxed max-w-md mx-auto">{message}</p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -65,7 +63,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           )}
         </div>
       </div>
-      
+
       <p className="mt-12 text-center text-zinc-700 text-[10px] uppercase tracking-[0.8em]">
         If this problem persists, please contact support
       </p>
@@ -74,4 +72,3 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
 };
 
 export default ErrorDisplay;
-

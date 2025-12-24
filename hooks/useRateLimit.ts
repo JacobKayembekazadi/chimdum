@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import { rateLimiter } from '../utils/rateLimiter';
 
 interface RateLimitState {
@@ -43,4 +44,3 @@ export const useRateLimit = (key: string = 'default') => {
     reset,
   };
 };
-

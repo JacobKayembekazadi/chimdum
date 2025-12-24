@@ -35,4 +35,3 @@ The project currently has **4 moderate severity vulnerabilities** in development
 ## Reporting Security Issues
 
 If you discover a security vulnerability, please email security@chimdum.com (or create a private security advisory on GitHub).
-

@@ -1,14 +1,17 @@
+import { GoogleGenAI } from '@google/genai';
 
-import { GoogleGenAI } from "@google/genai";
-import { UserAnswers } from "../types";
-import { SYSTEM_PROMPT, QUESTIONS } from "../constants";
-import { getValidatedApiKey } from "../utils/apiKeyValidator";
-import { retryWithBackoff, formatApiError } from "../utils/apiHelpers";
-import { logError, getUserFriendlyErrorMessage } from "../utils/errorLogger";
-import { rateLimiter } from "../utils/rateLimiter";
+import { SYSTEM_PROMPT, QUESTIONS } from '../constants';
+import { UserAnswers } from '../types';
+import { retryWithBackoff, formatApiError } from '../utils/apiHelpers';
+import { getValidatedApiKey } from '../utils/apiKeyValidator';
+import { logError, getUserFriendlyErrorMessage } from '../utils/errorLogger';
+import { rateLimiter } from '../utils/rateLimiter';
 
 export class GeminiServiceError extends Error {
-  constructor(message: string, public readonly originalError?: unknown) {
+  constructor(
+    message: string,
+    public readonly originalError?: unknown
+  ) {
     super(message);
     this.name = 'GeminiServiceError';
   }
@@ -30,7 +33,7 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
   const apiKey = getValidatedApiKey();
 
   const ai = new GoogleGenAI({ apiKey });
-  
+
   // Construct a summary of user answers for the prompt
   const answerSummary = QUESTIONS.map(q => {
     const answerValue = answers[q.id];
@@ -48,17 +51,17 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
   try {
     const response = await retryWithBackoff(async () => {
       return await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: 'gemini-2.0-flash-exp',
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
           temperature: 0.7,
-        }
+        },
       });
     });
 
     const result = response.text;
-    
+
     if (!result || result.trim() === '') {
       throw new GeminiServiceError('Empty response from API');
     }
@@ -75,10 +78,11 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
       throw error;
     }
 
-    const friendlyMessage = error instanceof Error 
-      ? getUserFriendlyErrorMessage(error)
-      : 'Unable to generate recommendation. Please try again.';
-    
+    const friendlyMessage =
+      error instanceof Error
+        ? getUserFriendlyErrorMessage(error)
+        : 'Unable to generate recommendation. Please try again.';
+
     throw new GeminiServiceError(friendlyMessage, error);
   }
 };

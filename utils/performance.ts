@@ -21,7 +21,7 @@ export const measureWebVitals = (onPerfEntry?: (metric: WebVitals) => void): voi
   // Measure Largest Contentful Paint (LCP)
   if ('PerformanceObserver' in window) {
     try {
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1] as PerformanceEntry & {
           renderTime?: number;
@@ -49,7 +49,7 @@ export const measureWebVitals = (onPerfEntry?: (metric: WebVitals) => void): voi
   // Measure First Input Delay (FID)
   if ('PerformanceObserver' in window) {
     try {
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         const entries = list.getEntries();
         entries.forEach((entry: PerformanceEventTiming) => {
           const value = entry.processingStart - entry.startTime;
@@ -73,8 +73,9 @@ export const measureWebVitals = (onPerfEntry?: (metric: WebVitals) => void): voi
   if ('PerformanceObserver' in window) {
     try {
       let clsValue = 0;
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         const entries = list.getEntries() as PerformanceEntry[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         entries.forEach((entry: any) => {
           if (!entry.hadRecentInput) {
             clsValue += entry.value;
@@ -131,4 +132,3 @@ export const measureApiCall = async <T>(
 
   return { result, duration };
 };
-

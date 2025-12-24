@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import { UserAnswers } from '../types';
 import { validateAnswers, isValidAnswer } from '../utils/validation';
 
@@ -20,7 +21,9 @@ export const useAnswerValidation = () => {
     const errors: string[] = [];
 
     if (!result.isValid) {
-      errors.push(`Please answer all questions. Missing: ${result.missingQuestions.length} question(s)`);
+      errors.push(
+        `Please answer all questions. Missing: ${result.missingQuestions.length} question(s)`
+      );
     }
 
     // Validate each answer value
@@ -53,4 +56,3 @@ export const useAnswerValidation = () => {
     validationResult,
   };
 };
-

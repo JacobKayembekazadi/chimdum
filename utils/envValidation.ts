@@ -15,11 +15,11 @@ interface EnvConfig {
 export const validateEnvironment = (): EnvConfig => {
   // Prioritize Gemini API key (supports voice), fallback to DeepSeek
   const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.DEEPSEEK_API_KEY;
-  
+
   if (!apiKey || apiKey.trim() === '' || apiKey === 'your_api_key_here') {
     throw new Error(
       'GEMINI_API_KEY is not set. Please create a .env.local file with your API key.\n' +
-      'See .env.example for reference.'
+        'See .env.example for reference.'
     );
   }
 
@@ -51,4 +51,3 @@ export const isEnvironmentValid = (): boolean => {
 export const getApiKey = (): string => {
   return process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.DEEPSEEK_API_KEY || '';
 };
-
