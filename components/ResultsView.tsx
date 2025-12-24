@@ -190,9 +190,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, preGeneratedContent,
           </div>
 
           <div className="mt-20 flex flex-col md:flex-row gap-6">
-            <button className="flex-1 bg-white text-black px-10 py-6 font-bold uppercase tracking-[0.2em] hover:bg-[#C5A059] transition-all shadow-xl active:scale-95 text-sm">
-              Get Started
-            </button>
+            <a
+              href="https://chimduumherbs.shop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-white text-black px-10 py-6 font-bold uppercase tracking-[0.2em] hover:bg-[#C5A059] transition-all shadow-xl active:scale-95 text-sm text-center"
+            >
+              Shop Now
+            </a>
             <button
               onClick={onRestart}
               className="flex-1 bg-transparent text-zinc-500 px-10 py-6 font-bold border border-white/10 uppercase tracking-[0.2em] hover:text-white hover:border-white transition-all active:scale-95 text-sm"

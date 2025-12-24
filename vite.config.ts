@@ -19,10 +19,10 @@ export default defineConfig(({ mode }) => {
         brotliSize: true,
       }),
     ],
+    // API keys are now handled server-side via Edge Functions
+    // No need to expose them in client-side code
     define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.DEEPSEEK_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.DEEPSEEK_API_KEY': JSON.stringify(env.DEEPSEEK_API_KEY), // Alternative
+      'process.env.NODE_ENV': JSON.stringify(mode),
     },
     resolve: {
       alias: {
