@@ -1,0 +1,7 @@
+{
+  "name": "Chimdum Holistic Wellness Guide",
+  "description": "A digital assistant built on Dr. Chimdum’s African herbal philosophy, guiding users through a holistic assessment to find the right herbal support.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
