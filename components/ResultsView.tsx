@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { generateWellnessRecommendation, GeminiServiceError } from '../services/geminiService';
+import { generateWellnessRecommendation, DeepSeekServiceError } from '../services/deepseekService';
 import { UserAnswers } from '../types';
 
 import ErrorDisplay from './ErrorDisplay';
@@ -26,7 +26,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, onRestart }) => {
         setContent(result);
       } catch (err) {
         const errorMessage =
-          err instanceof GeminiServiceError
+          err instanceof DeepSeekServiceError
             ? err.message
             : err instanceof Error
               ? err.message
@@ -70,7 +70,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, onRestart }) => {
             })
             .catch(err => {
               const errorMessage =
-                err instanceof GeminiServiceError
+                err instanceof DeepSeekServiceError
                   ? err.message
                   : 'Failed to generate recommendation. Please try again.';
               setError(errorMessage);
