@@ -20,11 +20,14 @@ export class DeepSeekServiceError extends Error {
 
 /**
  * Creates a DeepSeek API client
+ * Note: dangerouslyAllowBrowser is required for browser environments
+ * The API key is already exposed via environment variables in the build
  */
 const createDeepSeekClient = (apiKey: string): OpenAI => {
   return new OpenAI({
     apiKey,
     baseURL: 'https://api.deepseek.com',
+    dangerouslyAllowBrowser: true, // Required for browser usage - API key is already in the build
   });
 };
 
