@@ -241,11 +241,14 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
 
     if (provider === 'deepseek') {
       // Use DeepSeek API (OpenAI-compatible)
+      console.log('Creating DeepSeek client...');
       const client = new OpenAI({
         apiKey,
         baseURL: 'https://api.deepseek.com',
+        timeout: 55000, // 55 second timeout (slightly less than 60s fetch timeout)
       });
 
+      console.log('Calling DeepSeek API...');
       const response = await client.chat.completions.create({
         model: 'deepseek-chat',
         messages: [
@@ -262,6 +265,7 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
         max_tokens: 2000,
       });
 
+      console.log('DeepSeek API response received');
       result = response.choices[0]?.message?.content || '';
     } else {
       // Use Gemini API

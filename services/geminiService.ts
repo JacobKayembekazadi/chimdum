@@ -27,9 +27,12 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
   }
 
   try {
-    // Add timeout to fetch request
+    // Add timeout to fetch request - increased to 60 seconds for AI API calls
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeoutId = setTimeout(() => {
+      console.warn('API request timeout after 60 seconds');
+      controller.abort();
+    }, 60000); // 60 second timeout (AI APIs can take time)
 
     const response = await fetch('/api/wellness', {
       method: 'POST',
@@ -63,8 +66,8 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
     return data.recommendation;
   } catch (error) {
     // Handle AbortError (timeout)
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new GeminiServiceError('Request timed out. Please check your internet connection and try again.');
+    if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('aborted'))) {
+      throw new GeminiServiceError('The request took too long to complete. The AI service may be experiencing high load. Please try again in a moment.');
     }
     
     // Handle network errors
