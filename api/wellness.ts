@@ -3,18 +3,18 @@ import { GoogleGenAI } from '@google/genai';
 import OpenAI from 'openai';
 
 export const config = {
-  runtime: 'nodejs', // Changed from 'edge' to 'nodejs' for better compatibility with AI libraries
+  runtime: 'nodejs',
 };
-
-// UserAnswers type is inferred from request body
 
 type ApiProvider = 'gemini' | 'deepseek';
 
+/**
+ * Detects which API provider to use based on environment variables
+ */
 function detectProvider(): { provider: ApiProvider; apiKey: string } | null {
   // PRIORITY 1: Check for DeepSeek API key explicitly set
   const deepseekKey = process.env.DEEPSEEK_API_KEY;
   if (deepseekKey && deepseekKey.trim() !== '') {
-    // DeepSeek keys should start with 'sk-', but accept any non-empty value if explicitly set
     console.log('Using DEEPSEEK_API_KEY (explicitly set)');
     return { provider: 'deepseek', apiKey: deepseekKey.trim() };
   }
@@ -43,38 +43,206 @@ function detectProvider(): { provider: ApiProvider; apiKey: string } | null {
   return null;
 }
 
-export default async function handler(req: Request) {
-  // Add CORS headers for development
+/**
+ * Wraps an async operation with a timeout using AbortController
+ */
+async function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  errorMessage: string
+): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    console.error(`Operation timed out after ${timeoutMs}ms: ${errorMessage}`);
+    controller.abort();
+  }, timeoutMs);
+
+  try {
+    // Create a timeout promise that rejects when aborted
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      controller.signal.addEventListener('abort', () => {
+        reject(new Error(`Timeout: ${errorMessage}`));
+      });
+    });
+
+    // Race between the actual promise and timeout
+    const result = await Promise.race([promise, timeoutPromise]);
+    clearTimeout(timeoutId);
+    return result;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
+  }
+}
+
+/**
+ * Calls DeepSeek API with timeout protection
+ */
+async function callDeepSeekAPI(
+  apiKey: string,
+  systemPrompt: string,
+  userPrompt: string
+): Promise<string> {
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.deepseek.com',
+    // Don't rely on client timeout - we'll use our own wrapper
+  });
+
+  console.log('Calling DeepSeek API with model: deepseek-chat');
+  const startTime = Date.now();
+
+  // Wrap the API call with a 45-second timeout
+  const response = await withTimeout(
+    client.chat.completions.create({
+      model: 'deepseek-chat',
+      messages: [
+        {
+          role: 'system',
+          content: systemPrompt,
+        },
+        {
+          role: 'user',
+          content: userPrompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 2000,
+    }),
+    45000, // 45 second timeout (leaves buffer for response processing)
+    'DeepSeek API call'
+  );
+
+  const duration = Date.now() - startTime;
+  console.log(`DeepSeek API response received in ${duration}ms`);
+
+  const result = response.choices[0]?.message?.content || '';
+
+  if (!result) {
+    console.error('DeepSeek returned empty result. Response:', JSON.stringify(response, null, 2));
+    throw new Error('DeepSeek API returned empty response');
+  }
+
+  console.log(`DeepSeek result length: ${result.length} characters`);
+  return result;
+}
+
+/**
+ * Calls Gemini API with timeout protection
+ */
+async function callGeminiAPI(
+  apiKey: string,
+  systemPrompt: string,
+  userPrompt: string
+): Promise<string> {
+  const ai = new GoogleGenAI({ apiKey });
+
+  console.log('Calling Gemini API with model: gemini-2.0-flash-exp');
+  const startTime = Date.now();
+
+  // Wrap the API call with a 45-second timeout
+  const response = await withTimeout(
+    ai.models.generateContent({
+      model: 'gemini-2.0-flash-exp',
+      contents: userPrompt,
+      config: {
+        systemInstruction: systemPrompt,
+        temperature: 0.7,
+      },
+    }),
+    45000, // 45 second timeout
+    'Gemini API call'
+  );
+
+  const duration = Date.now() - startTime;
+  console.log(`Gemini API response received in ${duration}ms`);
+
+  let result = response.text || '';
+
+  // Try fallback model if empty
+  if (!result) {
+    console.warn('Gemini returned empty result, trying fallback model: gemini-1.5-flash');
+    const fallbackResponse = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: userPrompt,
+        config: {
+          systemInstruction: systemPrompt,
+          temperature: 0.7,
+        },
+      }),
+      45000,
+      'Gemini fallback API call'
+    );
+    result = fallbackResponse.text || '';
+  }
+
+  if (!result) {
+    throw new Error('Gemini API returned empty response');
+  }
+
+  return result;
+}
+
+export default async function handler(req: Request): Promise<Response> {
+  // CORS headers for all responses
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
   };
 
+  // Handle OPTIONS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 200, headers: corsHeaders });
-  }
-
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+    return new Response(null, {
+      status: 200,
+      headers: corsHeaders,
     });
   }
 
-  try {
-    const { answers } = await req.json();
-    console.log('Received request with answers:', JSON.stringify(answers));
+  // Only allow POST
+  if (req.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Method not allowed' }),
+      {
+        status: 405,
+        headers: corsHeaders,
+      }
+    );
+  }
 
-    if (!answers || typeof answers !== 'object') {
-      return new Response(JSON.stringify({ error: 'Invalid request: answers required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+  try {
+    // Parse request body with timeout protection
+    let answers: Record<number, string>;
+    try {
+      const body = await req.json();
+      answers = body.answers;
+    } catch (parseError) {
+      console.error('Failed to parse request body:', parseError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid request: unable to parse JSON body' }),
+        {
+          status: 400,
+          headers: corsHeaders,
+        }
+      );
     }
 
-    const providerInfo = detectProvider();
+    console.log('Received request with answers:', JSON.stringify(answers));
 
+    if (!answers || typeof answers !== 'object' || Object.keys(answers).length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request: answers required' }),
+        {
+          status: 400,
+          headers: corsHeaders,
+        }
+      );
+    }
+
+    // Detect provider
+    const providerInfo = detectProvider();
     if (!providerInfo) {
       console.error('No API key found. Available env vars:', {
         hasDeepSeek: !!process.env.DEEPSEEK_API_KEY,
@@ -88,7 +256,7 @@ export default async function handler(req: Request) {
         }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          headers: corsHeaders,
         }
       );
     }
@@ -230,159 +398,90 @@ Encourage action without pressure.
       return `${q.text}: ${answerLabel}`;
     }).join('\n');
 
-    const prompt = `Based on the following user assessment, provide a wellness recommendation following your strict rules and output format:
+    const userPrompt = `Based on the following user assessment, provide a wellness recommendation following your strict rules and output format:
 
 User Assessment:
 ${answerSummary}
 
 Ensure the recommendation strictly follows the Decision Logic and Output Format specified in your system instructions.`;
 
+    // Call the appropriate API with timeout protection
     let result: string;
-
-    if (provider === 'deepseek') {
-      // Use DeepSeek API (OpenAI-compatible)
-      console.log('Creating DeepSeek client...');
-      try {
-        const client = new OpenAI({
-          apiKey,
-          baseURL: 'https://api.deepseek.com',
-          timeout: 55000, // 55 second timeout (slightly less than 60s fetch timeout)
-        });
-
-        console.log('Calling DeepSeek API with model: deepseek-chat');
-        console.log('Prompt length:', prompt.length);
-        console.log('System prompt length:', SYSTEM_PROMPT.length);
-        
-        const startTime = Date.now();
-        const response = await client.chat.completions.create({
-          model: 'deepseek-chat',
-          messages: [
-            {
-              role: 'system',
-              content: SYSTEM_PROMPT,
-            },
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-          temperature: 0.7,
-          max_tokens: 2000,
-        });
-
-        const duration = Date.now() - startTime;
-        console.log(`DeepSeek API response received in ${duration}ms`);
-        
-        result = response.choices[0]?.message?.content || '';
-        
-        if (!result) {
-          console.error('DeepSeek returned empty result. Response:', JSON.stringify(response, null, 2));
-          throw new Error('DeepSeek API returned empty response');
-        }
-        
-        console.log(`DeepSeek result length: ${result.length} characters`);
-      } catch (deepseekError) {
-        console.error('DeepSeek API call failed:', deepseekError);
-        console.error('Error type:', deepseekError instanceof Error ? deepseekError.constructor.name : typeof deepseekError);
-        console.error('Error message:', deepseekError instanceof Error ? deepseekError.message : String(deepseekError));
-        
-        if (deepseekError instanceof Error) {
-          // Re-throw with more context
-          throw new Error(`DeepSeek API error: ${deepseekError.message}. Check API key and network connection.`);
-        }
-        throw deepseekError;
+    try {
+      if (provider === 'deepseek') {
+        result = await callDeepSeekAPI(apiKey, SYSTEM_PROMPT, userPrompt);
+      } else {
+        result = await callGeminiAPI(apiKey, SYSTEM_PROMPT, userPrompt);
       }
-    } else {
-      // Use Gemini API
-      console.log('Attempting Gemini API call...');
-      try {
-        const ai = new GoogleGenAI({ apiKey });
-        console.log('GoogleGenAI instance created, calling generateContent...');
-        
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.0-flash-exp',
-          contents: prompt,
-          config: {
-            systemInstruction: SYSTEM_PROMPT,
-            temperature: 0.7,
-          },
-        });
-
-        console.log('Gemini API response received');
-        result = response.text || '';
-        
-        if (!result) {
-          console.warn('Gemini returned empty result, trying fallback model...');
-          // Try fallback model
-          const fallbackResponse = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
-            contents: prompt,
-            config: {
-              systemInstruction: SYSTEM_PROMPT,
-              temperature: 0.7,
-            },
-          });
-          result = fallbackResponse.text || '';
-        }
-      } catch (geminiError) {
-        console.error('Gemini API error:', geminiError);
-        console.error('Error details:', {
-          message: geminiError instanceof Error ? geminiError.message : 'Unknown',
-          name: geminiError instanceof Error ? geminiError.name : 'Unknown',
-          stack: geminiError instanceof Error ? geminiError.stack : 'No stack',
-        });
-        
-        // If Gemini fails, try with a simpler model name
-        try {
-          console.log('Trying fallback model: gemini-1.5-flash');
-          const ai = new GoogleGenAI({ apiKey });
-          const response = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
-            contents: prompt,
-            config: {
-              systemInstruction: SYSTEM_PROMPT,
-              temperature: 0.7,
-            },
-          });
-          result = response.text || '';
-          console.log('Fallback model succeeded');
-        } catch (fallbackError) {
-          console.error('Gemini fallback error:', fallbackError);
-          throw new Error(`Gemini API error: ${geminiError instanceof Error ? geminiError.message : 'Unknown error'}. Fallback also failed: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown'}`);
-        }
+    } catch (apiError) {
+      console.error(`${provider} API call failed:`, apiError);
+      const errorMessage = apiError instanceof Error ? apiError.message : String(apiError);
+      
+      // Check if it's a timeout
+      if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
+        return new Response(
+          JSON.stringify({
+            error: 'Request timeout',
+            message: 'The AI service took too long to respond. Please try again.',
+          }),
+          {
+            status: 504,
+            headers: corsHeaders,
+          }
+        );
       }
+
+      // Check if it's an authentication error
+      if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('Invalid API key')) {
+        return new Response(
+          JSON.stringify({
+            error: 'Authentication failed',
+            message: 'Invalid API key. Please check your API key configuration.',
+          }),
+          {
+            status: 401,
+            headers: corsHeaders,
+          }
+        );
+      }
+
+      // Generic API error
+      throw new Error(`${provider} API error: ${errorMessage}`);
     }
-    
+
+    // Validate result
+    if (!result || result.trim() === '') {
+      console.error('API returned empty result');
+      return new Response(
+        JSON.stringify({ error: 'Empty response from API' }),
+        {
+          status: 500,
+          headers: corsHeaders,
+        }
+      );
+    }
+
     console.log(`API call successful, result length: ${result.length}`);
 
-    if (!result || result.trim() === '') {
-      return new Response(JSON.stringify({ error: 'Empty response from API' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    return new Response(JSON.stringify({ recommendation: result }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
-    });
+    // Return success response
+    return new Response(
+      JSON.stringify({ recommendation: result }),
+      {
+        status: 200,
+        headers: corsHeaders,
+      }
+    );
   } catch (error) {
+    // Catch-all error handler
     console.error('Wellness API error:', error);
+    console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
     console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
 
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const errorDetails = error instanceof Error ? {
-      message: error.message,
-      name: error.name,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-    } : { message: 'Unknown error' };
-
-    // Return more detailed error in response for debugging
     const errorResponse = {
       error: 'Unable to generate recommendation',
       message: errorMessage,
-      // Include details in production too for better debugging (but not stack traces)
-      details: errorDetails,
     };
 
     console.error('Returning error response:', JSON.stringify(errorResponse, null, 2));
@@ -391,7 +490,7 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
       JSON.stringify(errorResponse),
       {
         status: 500,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        headers: corsHeaders,
       }
     );
   }
