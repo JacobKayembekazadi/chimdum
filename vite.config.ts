@@ -4,18 +4,17 @@ import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '');
+  // Load environment variables
+  loadEnv(mode, '.', '');
   return {
     server: {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:3001',
           changeOrigin: true,
-          // For Vercel Edge Functions, we need to handle them differently
-          // In development, if using Vercel CLI, it will handle this
-          // Otherwise, we'll need to set up a local server
+          // Vercel serverless functions run on port 3001
         },
       },
     },

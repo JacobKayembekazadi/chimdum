@@ -54,7 +54,7 @@ async function withTimeout<T>(
   errorMessage: string
 ): Promise<T> {
   let timeoutId: NodeJS.Timeout;
-  
+
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(() => {
       console.error(`Operation timed out after ${timeoutMs}ms: ${errorMessage}`);
@@ -155,25 +155,41 @@ async function callGeminiAPI(
   const duration = Date.now() - startTime;
   console.log(`Gemini API response received in ${duration}ms`);
 
-  let result = response.text || '';
+  // Extract text from response - handle different response formats
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const typedResponse = response as any;
+  let result = '';
 
-    // Try fallback model if empty
-    if (!result) {
-      console.warn('Gemini returned empty result, trying fallback model: gemini-1.5-flash');
-      const fallbackResponse = await withTimeout(
-        ai.models.generateContent({
-          model: 'gemini-1.5-flash',
-          contents: userPrompt,
-          config: {
-            systemInstruction: systemPrompt,
-            temperature: 0.7,
-          },
-        }),
-        50000, // 50 second timeout
-        'Gemini fallback API call'
-      );
-      result = fallbackResponse.text || '';
+  if (typedResponse?.text) {
+    result = typeof typedResponse.text === 'function' ? typedResponse.text() : typedResponse.text;
+  } else if (typedResponse?.candidates?.[0]?.content?.parts?.[0]?.text) {
+    result = typedResponse.candidates[0].content.parts[0].text;
+  }
+
+  // Try fallback model if empty
+  if (!result) {
+    console.warn('Gemini returned empty result, trying fallback model: gemini-1.5-flash');
+    const fallbackResponse = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: userPrompt,
+        config: {
+          systemInstruction: systemPrompt,
+          temperature: 0.7,
+        },
+      }),
+      50000, // 50 second timeout
+      'Gemini fallback API call'
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const typedFallback = fallbackResponse as any;
+    if (typedFallback?.text) {
+      result = typeof typedFallback.text === 'function' ? typedFallback.text() : typedFallback.text;
+    } else if (typedFallback?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      result = typedFallback.candidates[0].content.parts[0].text;
     }
+  }
 
   if (!result) {
     throw new Error('Gemini API returned empty response');
@@ -183,6 +199,34 @@ async function callGeminiAPI(
 }
 
 export default async function handler(req: Request): Promise<Response> {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DEBUG: Comprehensive logging for troubleshooting
+  // ═══════════════════════════════════════════════════════════════════════════
+  const debugInfo = {
+    timestamp: new Date().toISOString(),
+    method: req.method,
+    url: req.url,
+    environment: {
+      NODE_ENV: process.env.NODE_ENV || 'not set',
+      VERCEL_ENV: process.env.VERCEL_ENV || 'not set',
+      hasDeepSeekKey: !!process.env.DEEPSEEK_API_KEY,
+      deepSeekKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0,
+      deepSeekKeyPrefix: process.env.DEEPSEEK_API_KEY?.substring(0, 5) || 'none',
+      hasGeminiKey: !!process.env.GEMINI_API_KEY,
+      geminiKeyLength: process.env.GEMINI_API_KEY?.length || 0,
+      geminiKeyPrefix: process.env.GEMINI_API_KEY?.substring(0, 5) || 'none',
+      hasGenericApiKey: !!process.env.API_KEY,
+      genericKeyLength: process.env.API_KEY?.length || 0,
+      genericKeyPrefix: process.env.API_KEY?.substring(0, 5) || 'none',
+    },
+  };
+
+  console.log('═══════════════════════════════════════════════════════════════════');
+  console.log('🔍 WELLNESS API DEBUG INFO');
+  console.log('═══════════════════════════════════════════════════════════════════');
+  console.log(JSON.stringify(debugInfo, null, 2));
+  console.log('═══════════════════════════════════════════════════════════════════');
+
   // CORS headers for all responses
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -199,10 +243,30 @@ export default async function handler(req: Request): Promise<Response> {
     });
   }
 
-  // Only allow POST
+  // GET request returns debug info (for testing deployment)
+  if (req.method === 'GET') {
+    const providerInfo = detectProvider();
+    return new Response(
+      JSON.stringify({
+        status: 'ok',
+        message: 'Wellness API is running',
+        debug: {
+          ...debugInfo,
+          providerDetected: providerInfo ? providerInfo.provider : 'none',
+          apiKeyConfigured: !!providerInfo,
+        },
+      }, null, 2),
+      {
+        status: 200,
+        headers: corsHeaders,
+      }
+    );
+  }
+
+  // Only allow POST for actual recommendations
   if (req.method !== 'POST') {
     return new Response(
-      JSON.stringify({ error: 'Method not allowed' }),
+      JSON.stringify({ error: 'Method not allowed. Use GET for debug info or POST for recommendations.' }),
       {
         status: 405,
         headers: corsHeaders,
@@ -414,7 +478,7 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
     } catch (apiError) {
       console.error(`${provider} API call failed:`, apiError);
       const errorMessage = apiError instanceof Error ? apiError.message : String(apiError);
-      
+
       // Check if it's a timeout
       if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
         return new Response(
