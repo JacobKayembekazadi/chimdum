@@ -105,4 +105,3 @@ The application will use APIs in this order:
 **API Key:** ✅ **CONFIGURED**
 
 Your application is now ready with full Gemini API support including voice features! 🚀🎤
-

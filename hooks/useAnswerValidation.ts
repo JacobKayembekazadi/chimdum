@@ -56,4 +56,3 @@ export const useAnswerValidation = () => {
     validationResult,
   };
 };
-

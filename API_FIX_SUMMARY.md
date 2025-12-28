@@ -19,21 +19,25 @@ The API route `/api/wellness` was failing with "signal is aborted without reason
 ## Fixes Applied
 
 ### 1. Added `withTimeout()` Wrapper Function
+
 - Wraps all external API calls with a 45-second timeout using `AbortController` and `Promise.race()`
 - Ensures no API call can hang indefinitely
 - Automatically clears timeout on success or error
 
 ### 2. Consistent CORS Headers
+
 - All responses now include CORS headers
 - Centralized `corsHeaders` object used throughout
 - Includes `Content-Type` in headers
 
 ### 3. Separated API Call Functions
+
 - `callDeepSeekAPI()` - Handles DeepSeek calls with timeout
 - `callGeminiAPI()` - Handles Gemini calls with timeout
 - Both functions are wrapped with `withTimeout()`
 
 ### 4. Better Error Handling
+
 - Specific error responses for:
   - Timeout errors (504 status)
   - Authentication errors (401 status)
@@ -42,14 +46,17 @@ The API route `/api/wellness` was failing with "signal is aborted without reason
 - All errors are properly logged with context
 
 ### 5. Request Body Parsing Protection
+
 - Added try/catch around `req.json()` parsing
 - Returns proper error response if JSON is invalid
 
 ### 6. Explicit Return Types
+
 - Function signature: `async function handler(req: Request): Promise<Response>`
 - Ensures all code paths return a Response
 
 ### 7. No Hanging Promises
+
 - Every async operation is either:
   - Wrapped in timeout
   - Properly caught in try/catch
@@ -81,4 +88,3 @@ The API route `/api/wellness` was failing with "signal is aborted without reason
 ## No Other Files Need Updates
 
 The client-side code (`services/geminiService.ts`) already has proper timeout handling (60s), which is now aligned with the server-side 45s timeout (leaving buffer for network overhead).
-

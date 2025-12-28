@@ -16,8 +16,7 @@ This error indicates the API endpoint is being called but failing. Here's how to
    - **Environments**: ✅ Production, ✅ Preview, ✅ Development
 
    OR
-
-   - **Name**: `DEEPSEEK_API_KEY`  
+   - **Name**: `DEEPSEEK_API_KEY`
    - **Value**: Your DeepSeek API key (must start with `sk-`)
    - **Environments**: ✅ Production, ✅ Preview, ✅ Development
 
@@ -30,6 +29,7 @@ This error indicates the API endpoint is being called but failing. Here's how to
 3. Check the "Logs" tab to see detailed error messages
 
 The logs will show:
+
 - Whether API key was found
 - Which provider is being used
 - Any API call errors
@@ -38,26 +38,33 @@ The logs will show:
 ## Step 3: Verify API Key Format
 
 ### For Gemini:
+
 - Should be a long string (no specific prefix required)
 - Get it from: https://ai.google.dev/
 
 ### For DeepSeek:
+
 - Must start with `sk-`
 - Get it from: https://platform.deepseek.com/
 
 ## Common Issues
 
 ### Issue: "API key not configured"
+
 **Solution**: Set `GEMINI_API_KEY` or `DEEPSEEK_API_KEY` in Vercel environment variables
 
 ### Issue: "Empty response from API"
-**Solution**: 
+
+**Solution**:
+
 - Check API key is valid
 - Check Vercel function logs for detailed errors
 - Try a different model (code has fallback)
 
 ### Issue: "Request timed out"
-**Solution**: 
+
+**Solution**:
+
 - Check your internet connection
 - API might be slow, wait and retry
 - Check Vercel function timeout settings
@@ -83,6 +90,7 @@ curl -X POST https://your-domain.vercel.app/api/wellness \
 ```
 
 Expected response:
+
 ```json
 {
   "recommendation": "Welcome. I've reviewed your answers..."
@@ -100,4 +108,3 @@ Expected response:
 ## Need Help?
 
 Check the Vercel function logs - they now include detailed error messages that will tell you exactly what's wrong!
-

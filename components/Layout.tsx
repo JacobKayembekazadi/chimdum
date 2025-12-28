@@ -80,7 +80,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewChange }) 
               Chimdum
             </h1>
           </button>
-          
+
           {/* Desktop Navigation */}
           <nav
             className="hidden md:flex gap-8 lg:gap-12 text-[10px] sm:text-[11px] font-semibold tracking-[0.3em] uppercase"
@@ -202,17 +202,17 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewChange }) 
         role="contentinfo"
       >
         {/* Subtle background pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
             backgroundImage: `
               linear-gradient(rgba(197, 160, 89, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(197, 160, 89, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
+            backgroundSize: '40px 40px',
           }}
         />
-        
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-16 items-center relative z-10">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-5 tracking-wider text-white">

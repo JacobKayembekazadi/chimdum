@@ -20,6 +20,7 @@ vercel dev
 ```
 
 This will:
+
 - Start your Vite dev server
 - Handle `/api/wellness` endpoint properly
 - Use environment variables from `.env.local`
@@ -73,15 +74,20 @@ curl -X POST http://localhost:3000/api/wellness \
 ## Common Issues
 
 ### Issue: "API key not configured"
+
 **Solution**: Set `GEMINI_API_KEY` or `DEEPSEEK_API_KEY` in Vercel environment variables
 
 ### Issue: "Unable to connect"
-**Solution**: 
+
+**Solution**:
+
 - In development: Use `vercel dev` instead of `npm run dev`
 - In production: Check Vercel function logs for detailed errors
 
 ### Issue: "Empty response from API"
-**Solution**: 
+
+**Solution**:
+
 - Check API key is valid
 - Check Vercel function logs
 - Try a different model (code has fallback to `gemini-1.5-flash`)
@@ -89,10 +95,10 @@ curl -X POST http://localhost:3000/api/wellness \
 ## Debugging
 
 The API now includes extensive logging:
+
 - Logs when request is received
 - Logs which provider is being used
 - Logs API call attempts
 - Logs errors with full details (in development)
 
 Check your Vercel function logs to see what's happening!
-

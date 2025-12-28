@@ -39,4 +39,3 @@ describe('ErrorDisplay', () => {
     expect(screen.queryByLabelText('Retry operation')).not.toBeInTheDocument();
   });
 });
-

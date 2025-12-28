@@ -31,7 +31,7 @@ export const initMonitoring = (): void => {
   window.fetch = async (...args) => {
     const start = performance.now();
     const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || 'unknown';
-    
+
     try {
       const response = await originalFetch(...args);
       const duration = performance.now() - start;
@@ -42,7 +42,10 @@ export const initMonitoring = (): void => {
 
       // Check if response is an error status
       if (!response.ok && url.includes('/api/')) {
-        const errorText = await response.clone().text().catch(() => 'Unable to read error response');
+        const errorText = await response
+          .clone()
+          .text()
+          .catch(() => 'Unable to read error response');
         console.error(`[ERROR] API error: ${url} - Status: ${response.status}`, errorText);
         captureMessage(`API error: ${url} - Status: ${response.status}`, 'error');
       }
@@ -56,4 +59,3 @@ export const initMonitoring = (): void => {
     }
   };
 };
-

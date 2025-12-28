@@ -77,4 +77,3 @@ export const updateSEO = (data: SEOData): void => {
     updateMetaTag('og:type', data.type, 'property');
   }
 };
-

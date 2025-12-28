@@ -101,7 +101,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ answers, preGeneratedContent,
           />
           {/* Shimmer effect */}
           <div className="absolute inset-0 animate-shimmer pointer-events-none" />
-          
+
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 relative z-10 italic px-2">
             Your Natural Plan
           </h2>

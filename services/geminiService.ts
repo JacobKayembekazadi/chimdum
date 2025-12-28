@@ -45,15 +45,16 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = errorData.error || errorData.message || `API request failed with status ${response.status}`;
-      
+      const errorMessage =
+        errorData.error || errorData.message || `API request failed with status ${response.status}`;
+
       // Provide more specific error messages
       if (response.status === 500 && errorData.error === 'API key not configured') {
         throw new GeminiServiceError(
           'API configuration error. Please ensure GEMINI_API_KEY or DEEPSEEK_API_KEY is set in environment variables.'
         );
       }
-      
+
       throw new Error(errorMessage);
     }
 
@@ -66,10 +67,15 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
     return data.recommendation;
   } catch (error) {
     // Handle AbortError (timeout)
-    if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('aborted'))) {
-      throw new GeminiServiceError('The request took too long to complete. The AI service may be experiencing high load. Please try again in a moment.');
+    if (
+      error instanceof Error &&
+      (error.name === 'AbortError' || error.message.includes('aborted'))
+    ) {
+      throw new GeminiServiceError(
+        'The request took too long to complete. The AI service may be experiencing high load. Please try again in a moment.'
+      );
     }
-    
+
     // Handle network errors
     if (error instanceof TypeError && error.message.includes('fetch')) {
       throw new GeminiServiceError(

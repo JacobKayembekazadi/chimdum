@@ -126,4 +126,3 @@ Successfully migrated the Chimdum Wellness Guide from Google Gemini API to DeepS
 **Ready to Use:** ✅ **YES**
 
 Your application is now using DeepSeek API and ready to run! 🚀
-

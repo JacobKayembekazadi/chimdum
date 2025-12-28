@@ -57,4 +57,3 @@ export const useFocusTrap = (enabled: boolean, containerRef: RefObject<HTMLEleme
     };
   }, [enabled, containerRef]);
 };
-

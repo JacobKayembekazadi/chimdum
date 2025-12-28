@@ -9,4 +9,3 @@ export const useWebVitals = (onReport?: (metric: WebVitals) => void) => {
     }
   }, [onReport]);
 };
-

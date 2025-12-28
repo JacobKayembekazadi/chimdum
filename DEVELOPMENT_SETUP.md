@@ -7,21 +7,25 @@ The wellness recommendation API uses Vercel Edge Functions (`/api/wellness`). Th
 ## Option 1: Use Vercel CLI (Recommended)
 
 1. **Install Vercel CLI**:
+
    ```bash
    npm install -g vercel
    ```
 
 2. **Login to Vercel**:
+
    ```bash
    vercel login
    ```
 
 3. **Link your project** (if not already linked):
+
    ```bash
    vercel link
    ```
 
 4. **Run development server with Vercel**:
+
    ```bash
    vercel dev
    ```
@@ -38,6 +42,7 @@ If you can't use Vercel CLI, you can create a simple local API server:
 1. **Create a local API server** (see `scripts/dev-api-server.js`)
 
 2. **Run both servers**:
+
    ```bash
    # Terminal 1: Run Vite dev server
    npm run dev
@@ -106,9 +111,9 @@ curl -X POST http://localhost:3000/api/wellness \
 ```
 
 Expected response:
+
 ```json
 {
   "recommendation": "Welcome. I've reviewed your answers..."
 }
 ```
-

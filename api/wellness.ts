@@ -247,15 +247,19 @@ export default async function handler(req: Request): Promise<Response> {
   if (req.method === 'GET') {
     const providerInfo = detectProvider();
     return new Response(
-      JSON.stringify({
-        status: 'ok',
-        message: 'Wellness API is running',
-        debug: {
-          ...debugInfo,
-          providerDetected: providerInfo ? providerInfo.provider : 'none',
-          apiKeyConfigured: !!providerInfo,
+      JSON.stringify(
+        {
+          status: 'ok',
+          message: 'Wellness API is running',
+          debug: {
+            ...debugInfo,
+            providerDetected: providerInfo ? providerInfo.provider : 'none',
+            apiKeyConfigured: !!providerInfo,
+          },
         },
-      }, null, 2),
+        null,
+        2
+      ),
       {
         status: 200,
         headers: corsHeaders,
@@ -266,7 +270,9 @@ export default async function handler(req: Request): Promise<Response> {
   // Only allow POST for actual recommendations
   if (req.method !== 'POST') {
     return new Response(
-      JSON.stringify({ error: 'Method not allowed. Use GET for debug info or POST for recommendations.' }),
+      JSON.stringify({
+        error: 'Method not allowed. Use GET for debug info or POST for recommendations.',
+      }),
       {
         status: 405,
         headers: corsHeaders,
@@ -282,25 +288,19 @@ export default async function handler(req: Request): Promise<Response> {
       answers = body.answers;
     } catch (parseError) {
       console.error('Failed to parse request body:', parseError);
-      return new Response(
-        JSON.stringify({ error: 'Invalid request: unable to parse JSON body' }),
-        {
-          status: 400,
-          headers: corsHeaders,
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Invalid request: unable to parse JSON body' }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
 
     console.log('Received request with answers:', JSON.stringify(answers));
 
     if (!answers || typeof answers !== 'object' || Object.keys(answers).length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid request: answers required' }),
-        {
-          status: 400,
-          headers: corsHeaders,
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Invalid request: answers required' }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
 
     // Detect provider
@@ -494,7 +494,11 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
       }
 
       // Check if it's an authentication error
-      if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('Invalid API key')) {
+      if (
+        errorMessage.includes('401') ||
+        errorMessage.includes('unauthorized') ||
+        errorMessage.includes('Invalid API key')
+      ) {
         return new Response(
           JSON.stringify({
             error: 'Authentication failed',
@@ -514,25 +518,19 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
     // Validate result
     if (!result || result.trim() === '') {
       console.error('API returned empty result');
-      return new Response(
-        JSON.stringify({ error: 'Empty response from API' }),
-        {
-          status: 500,
-          headers: corsHeaders,
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Empty response from API' }), {
+        status: 500,
+        headers: corsHeaders,
+      });
     }
 
     console.log(`API call successful, result length: ${result.length}`);
 
     // Return success response
-    return new Response(
-      JSON.stringify({ recommendation: result }),
-      {
-        status: 200,
-        headers: corsHeaders,
-      }
-    );
+    return new Response(JSON.stringify({ recommendation: result }), {
+      status: 200,
+      headers: corsHeaders,
+    });
   } catch (error) {
     // Catch-all error handler
     console.error('Wellness API error:', error);
@@ -548,12 +546,9 @@ Ensure the recommendation strictly follows the Decision Logic and Output Format 
 
     console.error('Returning error response:', JSON.stringify(errorResponse, null, 2));
 
-    return new Response(
-      JSON.stringify(errorResponse),
-      {
-        status: 500,
-        headers: corsHeaders,
-      }
-    );
+    return new Response(JSON.stringify(errorResponse), {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }

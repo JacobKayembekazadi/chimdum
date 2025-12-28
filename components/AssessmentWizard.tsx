@@ -52,8 +52,8 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
           <div className="flex items-start gap-4">
             <div className="w-1 h-full bg-gradient-to-b from-[#C5A059] to-[#B38B45] flex-shrink-0" />
             <p className="text-zinc-200 text-lg sm:text-xl md:text-2xl leading-relaxed font-light italic">
-              &quot;Hi there. I will ask a few simple questions to see how you are feeling. This will
-              help me suggest plant-based support based on Dr. Chimdum&apos;s ideas.&quot;
+              &quot;Hi there. I will ask a few simple questions to see how you are feeling. This
+              will help me suggest plant-based support based on Dr. Chimdum&apos;s ideas.&quot;
             </p>
           </div>
         </div>
@@ -121,12 +121,14 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ onComplete, onCance
             >
               {/* Hover effect background */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#C5A059]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <span className={`text-xl sm:text-2xl relative z-10 transition-colors font-light pr-4 ${
-                answers[currentQuestion.id] === option.value
-                  ? 'text-white'
-                  : 'text-zinc-400 group-hover:text-white'
-              }`}>
+
+              <span
+                className={`text-xl sm:text-2xl relative z-10 transition-colors font-light pr-4 ${
+                  answers[currentQuestion.id] === option.value
+                    ? 'text-white'
+                    : 'text-zinc-400 group-hover:text-white'
+                }`}
+              >
                 {option.label}
               </span>
               <div

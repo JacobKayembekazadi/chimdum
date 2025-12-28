@@ -9,20 +9,29 @@ const Hero: React.FC<HeroProps> = ({ onStartText }) => {
     <div className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-[#050505]">
       {/* Enhanced Background Ambience */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl opacity-[0.15] pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#C5A059] rounded-full blur-[120px] sm:blur-[180px] animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#B38B45] rounded-full blur-[120px] sm:blur-[180px] animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 h-48 sm:h-72 bg-[#F1D391] rounded-full blur-[100px] sm:blur-[140px] opacity-40 animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div
+          className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#C5A059] rounded-full blur-[120px] sm:blur-[180px] animate-pulse"
+          style={{ animationDuration: '4s' }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#B38B45] rounded-full blur-[120px] sm:blur-[180px] animate-pulse"
+          style={{ animationDuration: '5s', animationDelay: '1s' }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 h-48 sm:h-72 bg-[#F1D391] rounded-full blur-[100px] sm:blur-[140px] opacity-40 animate-pulse"
+          style={{ animationDuration: '6s', animationDelay: '2s' }}
+        />
       </div>
 
       {/* Subtle grid pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage: `
             linear-gradient(rgba(197, 160, 89, 0.1) 1px, transparent 1px),
             linear-gradient(90deg, rgba(197, 160, 89, 0.1) 1px, transparent 1px)
           `,
-          backgroundSize: '50px 50px'
+          backgroundSize: '50px 50px',
         }}
       />
 
