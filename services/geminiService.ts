@@ -16,6 +16,10 @@ export class GeminiServiceError extends Error {
 /**
  * Generates a wellness recommendation using Vercel Edge Function (secure API key handling)
  */
+// Configure API URL - use environment variable if set, otherwise relative path
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = `${API_BASE_URL}/api/wellness`;
+
 export const generateWellnessRecommendation = async (answers: UserAnswers): Promise<string> => {
   // Check rate limit
   if (!rateLimiter.isAllowed('api-request')) {
@@ -34,7 +38,7 @@ export const generateWellnessRecommendation = async (answers: UserAnswers): Prom
       controller.abort();
     }, 60000); // 60 second timeout (AI APIs can take time)
 
-    const response = await fetch('/api/wellness', {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
